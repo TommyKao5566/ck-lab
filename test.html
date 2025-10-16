@@ -4,6 +4,19 @@
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
     <title></title>
     <script src="./ckeditor/ckeditor.js"></script>
+    <style>
+        .my-page {
+            height: 900px;
+            border-bottom: 1px dotted black;
+        }
+        #page-container {
+            padding-top: 42px;
+            position: absolute;
+            top: 0;
+            width: -webkit-fill-available;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body lang=ZH-TW style='text-justify-trim:punctuation'>
@@ -14,9 +27,18 @@
             </tr>
 
             <tr>
-                <td>
+                <td style="position: relative;">
                     <textarea id='content001' name='content001'></textarea>
-                    <div>123</div>
+                    <div id="page-container">
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                        <div class="my-page"></div>
+                    </div>
                 </td>
             </tr>
         <table>
@@ -24,21 +46,13 @@
 </body>
 <script type='text/javascript'>
 if(window.navigator.userAgent.indexOf('Chrome') > -1 ){
-		var editor1;
-		
+		let editor1;
 		if(null != document.getElementById('content001')){
 			//editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
 			editor1 = CKEDITOR.replace('content001');
 			CKEDITOR.instances['content001'].updateElement();
-			editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>');
+			editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>'.repeat(8));
 		}
-		
-		
-		//alert(editor1.getData());
-		//alert(editor2.getData());
-		//alert(editor3.getData());
-		//alert(editor4.getData());
-
 }
 
 
