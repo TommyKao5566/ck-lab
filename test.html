@@ -1,0 +1,48 @@
+<html>
+
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=utf-8">
+    <title></title>
+    <script src="./ckeditor/ckeditor.js"></script>
+</head>
+
+<body lang=ZH-TW style='text-justify-trim:punctuation'>
+    <center>
+        <table border=0>
+            <tr>
+                <td align=left><b>作答區：(可切換輸入法進行輸入)</b></td>
+            </tr>
+
+            <tr>
+                <td>
+                    <textarea id='content001' name='content001'></textarea>
+                    <div>123</div>
+                </td>
+            </tr>
+        <table>
+    </center>
+</body>
+<script type='text/javascript'>
+if(window.navigator.userAgent.indexOf('Chrome') > -1 ){
+		var editor1;
+		
+		if(null != document.getElementById('content001')){
+			//editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
+			editor1 = CKEDITOR.replace('content001');
+			CKEDITOR.instances['content001'].updateElement();
+			editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>');
+		}
+		
+		
+		//alert(editor1.getData());
+		//alert(editor2.getData());
+		//alert(editor3.getData());
+		//alert(editor4.getData());
+
+}
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,53 @@
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
+ */
+
+.cke_acertest_colorcell {
+	width: 12px; /* All cells have equal width which depends on parent width (in this case table parent). Width works more like max-width. */
+	height: 14px;
+	padding: 1px; /* Padding is replaced by border for focused cells. Prevents 'jumping' when adding borders. */
+}
+
+.cke_acertest_colorcell.cke_acertest_focused_light,
+.cke_acertest_colorcell.cke_acertest_focused_dark {
+	padding: 0; /* Shrink cell to allow 1px border indicating focus. */
+	border: 1px dotted #000;
+}
+
+.cke_acertest_colorcell.cke_acertest_focused_dark {
+	border-color: #FFF;
+}
+
+ol.chinese1 {
+    counter-reset: chinese1;
+}
+ol.chinese2 {
+    counter-reset: chinese2;
+}
+ol.decimal1 {
+    counter-reset: decimal1
+}
+ol.decimal2 {
+    counter-reset: decimal2
+}
+ol li {
+    list-style: none;
+    position: relative;
+}
+ol.chinese2 > li:before {
+    counter-increment: chinese2;
+    content:"(" counter(chinese2, cjk-ideographic)")  "
+}
+ol.chinese1 > li:before {
+    counter-increment: chinese1;
+    content:counter(chinese1, cjk-ideographic)"¡B "
+}
+ol.decimal1 > li:before {
+    counter-increment: decimal1;
+    content:counter(decimal1, decimal)"¡B "
+}
+ol.decimal2 > li:before {
+    counter-increment: decimal2;
+    content:"(" counter(decimal2, decimal)")  "
+}

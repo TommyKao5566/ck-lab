@@ -1,0 +1,36 @@
+@charset "UTF-8";
+////
+ol {
+	margin-left: -40px;
+	counter-reset: chinese1;
+}
+ol.chinese2 {
+	counter-reset: chinese2;
+}
+ol.decimal1 {
+	counter-reset: decimal1
+}
+ol.decimal2 {
+	counter-reset: decimal2
+}
+ol li {
+	list-style: none;
+	position: relative;
+}
+
+ol > li:before {
+	counter-increment: chinese1;
+	content: counter(chinese1, cjk-ideographic)"¡B  "
+}
+ol.chinese2 > li:before {
+	counter-increment: chinese2;
+	content: "(" counter(chinese2, cjk-ideographic)")  "
+}
+ol.decimal1 > li:before {
+	counter-increment: decimal1;
+	content: counter(decimal1, decimal)"¡B  "
+}
+ol.decimal2 > li:before {
+	counter-increment: decimal2;
+	content: "(" counter(decimal2, decimal)")  "
+}
