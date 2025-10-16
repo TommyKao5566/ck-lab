@@ -5,6 +5,15 @@
     <title></title>
     <script src="./ckeditor/ckeditor.js"></script>
     <style>
+        #cke_1_top {
+            position: fixed;
+            width: 914px;
+        }
+
+        #cke_1_contents{
+            padding-top: 42px;
+        }
+
         .my-page {
             height: 900px;
             border-bottom: 1px dotted black;
@@ -14,9 +23,10 @@
         .my-page::before {
             counter-increment: index;
             content: "〈第" counter(index, cjk-ideographic) "頁〉";
-            margin-left: auto; /* 自動推到右邊 */
+            margin-left: auto;
+            /* 自動推到右邊 */
             margin-right: 25px;
-            color:aquamarine;
+            color: aquamarine;
         }
 
         #page-container {
