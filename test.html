@@ -8,13 +8,25 @@
         .my-page {
             height: 900px;
             border-bottom: 1px dotted black;
+            display: flex;
         }
+
+        .my-page::before {
+            counter-increment: index;
+            content: "〈第" counter(index, cjk-ideographic) "頁〉";
+            margin-left: auto; /* 自動推到右邊 */
+            margin-right: 25px;
+            color:aquamarine;
+        }
+
         #page-container {
             padding-top: 42px;
             position: absolute;
             top: 0;
             width: -webkit-fill-available;
             pointer-events: none;
+            counter-reset: index;
+            /* 初始化計數器 */
         }
     </style>
 </head>
@@ -41,19 +53,19 @@
                     </div>
                 </td>
             </tr>
-        <table>
+            <table>
     </center>
 </body>
 <script type='text/javascript'>
-if(window.navigator.userAgent.indexOf('Chrome') > -1 ){
-		let editor1;
-		if(null != document.getElementById('content001')){
-			//editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
-			editor1 = CKEDITOR.replace('content001');
-			CKEDITOR.instances['content001'].updateElement();
-			editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>'.repeat(8));
-		}
-}
+    if (window.navigator.userAgent.indexOf('Chrome') > -1) {
+        let editor1;
+        if (null != document.getElementById('content001')) {
+            //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
+            editor1 = CKEDITOR.replace('content001');
+            CKEDITOR.instances['content001'].updateElement();
+            editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>'.repeat(8));
+        }
+    }
 
 
 
