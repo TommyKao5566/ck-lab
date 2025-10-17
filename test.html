@@ -4,6 +4,8 @@
     <meta http-equiv=Content-Type content="text/html; charset=utf-8">
     <title></title>
     <script src="./ckeditor/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
     <style>
         #cke_1_top {
             position: fixed;
@@ -55,7 +57,9 @@
     <center>
         <table border=0>
             <tr id="hint">
-                <td align=left><b>作答區：(可切換輸入法進行輸入)</b></td>
+                <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
+                    <button id="btn-capture-preview">擷取內容圖片 (建議)</button>
+                </td>
             </tr>
 
             <tr>
@@ -107,5 +111,126 @@
         });
     })();
 </script>
+<script>
+    // --- Helper function to download a data URL ---
+    function downloadDataUrl(dataUrl, filename) {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.appendChild(link);
+        document.body.removeChild(link);
+    }
+
+    document.getElementById('btn-capture-preview').addEventListener('click', function () {
+
+        const editor = CKEDITOR.instances.content001;
+
+        if (!editor) {
+
+            alert('Editor not found!');
+
+            return;
+
+        }
+
+
+
+        // --- The Hidden Div Method --- 
+
+
+
+        // 1. Get editor content and the necessary CSS for styling it.
+
+        const editorData = editor.getData();
+
+        const editorContentCss = `
+        
+                            body { font-family: 細明體,新細明體,Arial,sans-serif,Verdana,標楷體,微軟正黑體; font-size: 12px; color: #333; background-color: #fff; margin: 20px; }
+        
+                            .cke_editable { font-size: 20px; font-family:標楷體; line-height: 1.8; letter-spacing:3pt; word-spacing:3pt; }
+        
+                            blockquote { font-style: italic; font-family: Georgia, Times, "Times New Roman", serif; padding: 2px 0; border-style: solid; border-color: #ccc; border-width: 0; }
+        
+                            a { color: #0782C1; }
+        
+                            ol,ul,dl { padding: 0 40px; }
+        
+                            h1,h2,h3,h4,h5,h6 { font-weight: normal; line-height: 1.2; }
+        
+                            hr { border: 0px; border-top: 1px solid #ccc; }
+        
+                            img.right { border: 1px solid #ccc; float: right; margin-left: 15px; padding: 5px; }
+        
+                            img.left { border: 1px solid #ccc; float: left; margin-right: 15px; padding: 5px; }
+        
+                            pre { white-space: pre-wrap; word-wrap: break-word; -moz-tab-size: 4; tab-size: 4; }
+        
+                            .marker { background-color: Yellow; }
+        
+                        `;
+
+
+
+        // 2. Create a temporary, off-screen container.
+
+        const renderContainer = document.createElement('div');
+
+        renderContainer.style.position = 'absolute';
+
+        renderContainer.style.left = '-9999px';
+
+        renderContainer.style.width = (editor.container.getClientRect().width || 800) + 'px'; // Use editor's width
+
+        renderContainer.style.border = '1px solid #ccc'; // Optional: add a border to match editor look
+
+        renderContainer.style.backgroundColor = 'white';
+
+
+
+        // 3. Inject styles and content into the container.
+
+        renderContainer.innerHTML = `
+        
+                            <style>${editorContentCss}</style>
+        
+                            <div class="cke_editable">${editorData}</div>
+        
+                        `;
+
+
+
+        // 4. Append to the body to make it renderable.
+
+        document.body.appendChild(renderContainer);
+
+
+
+        // 5. Run html2canvas on the hidden container.
+
+        html2canvas(renderContainer, {
+
+            useCORS: true
+
+        }).then(canvas => {
+
+            downloadDataUrl(canvas.toDataURL('image/png'), 'editor-content.png');
+
+        }).catch(err => {
+
+            console.error('Capture failed:', err);
+
+            alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
+
+        }).finally(() => {
+
+            // 6. Clean up by removing the temporary container.
+
+            document.body.removeChild(renderContainer);
+
+        });
+
+    });        </script>
 
 </html>
