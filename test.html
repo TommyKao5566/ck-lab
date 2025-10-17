@@ -58,8 +58,8 @@
         <table border=0>
             <tr id="hint">
                 <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
-                    <button id="btn-capture-preview">擷取內容圖片 (建議)</button>
-                    <button id="btn-capture-zip">擷取內容並壓縮為 ZIP</button>
+                    <button id="btn-capture-preview">擷取內容並下載多個圖片</button>
+                    <button id="btn-capture-zip">擷取內容並下載為ZIP</button>
                 </td>
             </tr>
 
@@ -168,7 +168,7 @@
     }
 
     // --- Button 1: Download individual images ---
-    document.getElementById('btn-capture-preview').addEventListener('click', function() {
+    document.getElementById('btn-capture-preview').addEventListener('click', function () {
         captureEditorContent(canvas => {
             const totalHeight = canvas.height;
             const chunkHeight = 900;
@@ -194,7 +194,7 @@
     });
 
     // --- Button 2: Download as ZIP ---
-    document.getElementById('btn-capture-zip').addEventListener('click', function() {
+    document.getElementById('btn-capture-zip').addEventListener('click', function () {
         captureEditorContent(canvas => {
             const zip = new JSZip();
             const totalHeight = canvas.height;
@@ -210,7 +210,7 @@
                 chunkCanvas.height = currentChunkHeight;
 
                 chunkCtx.drawImage(canvas, 0, i * chunkHeight, canvas.width, currentChunkHeight, 0, 0, canvas.width, currentChunkHeight);
-                
+
                 const base64Data = chunkCanvas.toDataURL('image/png').split(',')[1];
                 zip.file(`editor-content-part-${i + 1}.png`, base64Data, { base64: true });
             }
