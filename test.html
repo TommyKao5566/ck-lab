@@ -167,15 +167,19 @@
             });
     }
 
+    // --- Configuration ---
+    const maxPagesToSave = 8; // Only save the first 8 pages.
+
     // --- Button 1: Download individual images ---
     document.getElementById('btn-capture-preview').addEventListener('click', function () {
         captureEditorContent(canvas => {
             const totalHeight = canvas.height;
             const chunkHeight = 900;
             const numChunks = Math.ceil(totalHeight / chunkHeight);
+            const effectiveChunks = Math.min(numChunks, maxPagesToSave);
 
             function downloadChunk(chunkIndex) {
-                if (chunkIndex >= numChunks) return;
+                if (chunkIndex >= effectiveChunks) return;
 
                 const chunkCanvas = document.createElement('canvas');
                 const chunkCtx = chunkCanvas.getContext('2d');
@@ -200,8 +204,9 @@
             const totalHeight = canvas.height;
             const chunkHeight = 900;
             const numChunks = Math.ceil(totalHeight / chunkHeight);
+            const effectiveChunks = Math.min(numChunks, maxPagesToSave);
 
-            for (let i = 0; i < numChunks; i++) {
+            for (let i = 0; i < effectiveChunks; i++) {
                 const chunkCanvas = document.createElement('canvas');
                 const chunkCtx = chunkCanvas.getContext('2d');
                 const currentChunkHeight = Math.min(chunkHeight, totalHeight - (i * chunkHeight));
