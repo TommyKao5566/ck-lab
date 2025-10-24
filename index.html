@@ -6,6 +6,13 @@
     <script src="./ckeditor/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        const pageCount = 8;
+        const lineHeight = 36;
+        const pageLines = 25;
+        const myPageHeight = lineHeight * pageLines;
+        document.write(`<style>.my-page { height: ${myPageHeight}px; }</style>`);
+    </script>
     <style>
         #cke_1_top {
             position: fixed;
@@ -18,7 +25,6 @@
         }
 
         .my-page {
-            height: 900px;
             border-bottom: 1px dotted black;
             display: flex;
         }
@@ -84,14 +90,7 @@
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
         let editor1;
-
-        const lineHeight = 36
-
-        const pageCount = 8
-
-        const pageLines = 25
-
-        const editorHeight = lineHeight * pageCount * pageLines + 10; // Define editor height here
+        const editorHeight = myPageHeight * pageCount + 10; // Define editor height here
 
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
@@ -179,16 +178,15 @@
             });
     }
 
-    // --- Configuration ---
-    const maxPagesToSave = 8; // Only save the first 8 pages.
+
 
     // --- Button 1: Download individual images ---
     document.getElementById('btn-capture-preview').addEventListener('click', function () {
         captureEditorContent(canvas => {
             const totalHeight = canvas.height;
-            const chunkHeight = 900;
+            const chunkHeight = myPageHeight;
             const numChunks = Math.ceil(totalHeight / chunkHeight);
-            const effectiveChunks = Math.min(numChunks, maxPagesToSave);
+            const effectiveChunks = Math.min(numChunks, pageCount);
 
             function downloadChunk(chunkIndex) {
                 if (chunkIndex >= effectiveChunks) return;
@@ -214,9 +212,9 @@
         captureEditorContent(canvas => {
             const zip = new JSZip();
             const totalHeight = canvas.height;
-            const chunkHeight = 900;
+            const chunkHeight = myPageHeight;
             const numChunks = Math.ceil(totalHeight / chunkHeight);
-            const effectiveChunks = Math.min(numChunks, maxPagesToSave);
+            const effectiveChunks = Math.min(numChunks, pageCount);
 
             for (let i = 0; i < effectiveChunks; i++) {
                 const chunkCanvas = document.createElement('canvas');
@@ -244,7 +242,7 @@
 </script>
 <script>
     (function () {
-        const maxHeight = 7200;
+        const maxHeight = pageCount * myPageHeight;
         let iframeDoc = null;
 
         // Function to check the height and show an alert
