@@ -12,7 +12,7 @@
 ﻿	 //2、設定ui顏色
 ﻿	  config.uiColor = '#AADC6E';
 ﻿	 //3、設定高度及寬度
-﻿	  config.height = 7210;
+﻿	 
 ﻿	  config.width = 930;
 ﻿	  config.fontSize_defaultLabel = '20px';
 ﻿	  config.font_defaultLabel = '新細明體';

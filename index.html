@@ -84,9 +84,20 @@
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
         let editor1;
+
+        const lineHeight = 36
+
+        const pageCount = 8
+
+        const pageLines = 25
+
+        const editorHeight = lineHeight * pageCount * pageLines + 10; // Define editor height here
+
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
-            editor1 = CKEDITOR.replace('content001');
+            editor1 = CKEDITOR.replace('content001', {
+                height: editorHeight
+            });
             CKEDITOR.instances['content001'].updateElement();
             editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>'.repeat(8));
         }
@@ -231,37 +242,37 @@
 
 
 </script>
-    <script>
-        (function() {
-            const maxHeight = 7200;
-            let iframeDoc = null;
+<script>
+    (function () {
+        const maxHeight = 7200;
+        let iframeDoc = null;
 
-            // Function to check the height and show an alert
-            function checkHeight() {
-                // A small timeout to let the DOM update after the event
-                setTimeout(function() {
-                    if (!iframeDoc) return;
-                    const contentHeight = iframeDoc.body.scrollHeight;
+        // Function to check the height and show an alert
+        function checkHeight() {
+            // A small timeout to let the DOM update after the event
+            setTimeout(function () {
+                if (!iframeDoc) return;
+                const contentHeight = iframeDoc.body.scrollHeight;
 
-                    if (contentHeight > maxHeight) {
-                        alert(`內容高度已超過 ${maxHeight}px，請注意內容長度。`);
-                    }
-                }, 100); // A small delay for rendering
-            }
-
-            // Wait for the editor's iframe to be created
-            const initInterval = setInterval(function() {
-                const editorIframe = document.querySelector('#cke_1_contents iframe');
-                if (editorIframe && editorIframe.contentWindow && editorIframe.contentWindow.document) {
-                    iframeDoc = editorIframe.contentWindow.document;
-                    clearInterval(initInterval); // Stop polling
-
-                    // Attach event listeners as requested
-                    iframeDoc.addEventListener('keyup', checkHeight);
-                    iframeDoc.addEventListener('paste', checkHeight); // Also check on paste
+                if (contentHeight > maxHeight) {
+                    alert(`內容高度已超過 ${maxHeight}px，請注意內容長度。`);
                 }
-            }, 100);
-        })();
-    </script>
+            }, 100); // A small delay for rendering
+        }
+
+        // Wait for the editor's iframe to be created
+        const initInterval = setInterval(function () {
+            const editorIframe = document.querySelector('#cke_1_contents iframe');
+            if (editorIframe && editorIframe.contentWindow && editorIframe.contentWindow.document) {
+                iframeDoc = editorIframe.contentWindow.document;
+                clearInterval(initInterval); // Stop polling
+
+                // Attach event listeners as requested
+                iframeDoc.addEventListener('keyup', checkHeight);
+                iframeDoc.addEventListener('paste', checkHeight); // Also check on paste
+            }
+        }, 100);
+    })();
+</script>
 
 </html>
