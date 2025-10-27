@@ -116,9 +116,24 @@
         const editorHeight = myPageHeight * pageCount + 10; // Define editor height here
 
         if (null != document.getElementById('content001')) {
+            const contentsCss = `
+            body { font-family: 細明體,新細明體,Arial,sans-serif,Verdana,標楷體,微軟正黑體; font-size: 12px; color: #333; background-color: #fff; margin: 20px; }
+            p { margin: 0; }
+            .cke_editable { font-size: ${fontSize}px; font-family:標楷體; line-height: ${lineHeight / fontSize}; letter-spacing:3pt; word-spacing:3pt; margin-top: 0; margin-bottom: 0; }
+            blockquote { font-style: italic; font-family: Georgia, Times, "Times New Roman", serif; padding: 2px 0; border-style: solid; border-color: #ccc; border-width: 0; }
+            a { color: #0782C1; }
+            ol,ul,dl { padding: 0 40px; }
+            h1,h2,h3,h4,h5,h6 { font-weight: normal; line-height: 1.2; }
+            hr { border: 0px; border-top: 1px solid #ccc; }
+            img.right { border: 1px solid #ccc; float: right; margin-left: 15px; padding: 5px; }
+            img.left { border: 1px solid #ccc; float: left; margin-right: 15px; padding: 5px; }
+            pre { white-space: pre-wrap; word-wrap: break-word; -moz-tab-size: 4; tab-size: 4; }
+            .marker { background-color: Yellow; }
+        `;
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
             editor1 = CKEDITOR.replace('content001', {
-                height: editorHeight
+                height: editorHeight,
+                contentsCss
             });
             CKEDITOR.instances['content001'].updateElement();
             editor1.setData('1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>'.repeat(8));
@@ -157,7 +172,7 @@
     }
 
     // --- Main Capture Logic (used by both buttons) ---
-    function captureEditorContent(callback) {
+    function captureEditorContent(callback, lineHeight, fontSize) {
         const editor = CKEDITOR.instances.content001;
         if (!editor) {
             alert('Editor not found!');
@@ -168,7 +183,7 @@
         const editorContentCss = `
             body { font-family: 細明體,新細明體,Arial,sans-serif,Verdana,標楷體,微軟正黑體; font-size: 12px; color: #333; background-color: #fff; margin: 20px; }
             p { margin: 0; }
-            .cke_editable { font-size: ${fontSize}px; font-family:標楷體; line-height: ${lineHeight}; letter-spacing:3pt; word-spacing:3pt; }
+            .cke_editable { font-size: ${fontSize}px; font-family:標楷體; line-height: ${lineHeight / fontSize}; letter-spacing:3pt; word-spacing:3pt; }
             blockquote { font-style: italic; font-family: Georgia, Times, "Times New Roman", serif; padding: 2px 0; border-style: solid; border-color: #ccc; border-width: 0; }
             a { color: #0782C1; }
             ol,ul,dl { padding: 0 40px; }
@@ -227,7 +242,7 @@
                 setTimeout(() => downloadChunk(chunkIndex + 1), 500);
             }
             downloadChunk(0);
-        });
+        }, lineHeight, fontSize);
     });
 
     // --- Button 2: Download as ZIP ---
@@ -258,7 +273,8 @@
                 downloadDataUrl(url, 'editor-content.zip');
                 URL.revokeObjectURL(url); // Clean up
             });
-        });
+        }, lineHeight, fontSize);
+
     });
 
 
