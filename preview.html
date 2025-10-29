@@ -44,6 +44,27 @@
         pre { white-space: pre-wrap; word-wrap: break-word; -moz-tab-size: 4; tab-size: 4; }
         .marker { background-color: Yellow; }
         #controls { padding-bottom: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+        .my-page {
+            border-bottom: 1px dotted black;
+            display: flex;
+            height: 900px; /* Use myPageHeight */
+        }
+        .my-page::before {
+            counter-increment: index;
+            content: "〈第" counter(index, cjk-ideographic) "頁〉";
+            margin-left: auto;
+            margin-right: 25px;
+            color: aquamarine;
+        }
+        #page-container {
+            position: absolute;
+            top: 35px; /* body margin 20px + cke_editable padding 15px */
+            left: 35px; /* body margin 20px + cke_editable padding 15px */
+            width: 930px; /* Match content width */
+            pointer-events: none;
+            counter-reset: index;
+            z-index: 1; /* Ensure it's above the content if needed */
+        }
     </style>
 </head>
 <body>
@@ -51,6 +72,8 @@
         <button id="btn-capture-preview">擷取內容並下載多個圖片</button>
         <button id="btn-capture-zip">擷取內容並下載為ZIP</button>
     </div>
+
+    <div id="page-container"></div>
 
     <div id="content" class="cke_editable" lang="ZH-TW" dir="ltr">
         <!-- Content will be inserted here -->
@@ -74,6 +97,16 @@
                 // Disable buttons if no content
                 document.getElementById('btn-capture-preview').disabled = true;
                 document.getElementById('btn-capture-zip').disabled = true;
+            }
+
+            // Dynamically create page number overlays
+            const pageContainer = document.getElementById('page-container');
+            // Set the height of the page container to match the total content height for proper overlay
+            pageContainer.style.height = (myPageHeight * pageCount) + 'px';
+            for (let i = 0; i < pageCount; i++) {
+                const pageDiv = document.createElement('div');
+                pageDiv.className = 'my-page';
+                pageContainer.appendChild(pageDiv);
             }
         });
 
