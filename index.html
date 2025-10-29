@@ -87,8 +87,11 @@
         <table border=0>
             <tr id="hint">
                 <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
-                    <button id="btn-capture-preview">擷取內容並下載多個圖片</button>
-                    <button id="btn-capture-zip">擷取內容並下載為ZIP</button>
+                    <button onclick="
+    const editorData = CKEDITOR.instances.content001.getData();
+    localStorage.setItem('ckeditorContent', editorData);
+    window.open('preview.html', 'CKEditorPreview', 'width=980,height=600');
+">預覽</button>
                 </td>
             </tr>
 
@@ -166,125 +169,7 @@
         });
     })();
 </script>
-<script>
-    // --- Helper function to download a data URL ---
-    function downloadDataUrl(dataUrl, filename) {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
 
-    // --- Main Capture Logic (used by both buttons) ---
-    function captureEditorContent(callback, lineHeight, fontSize) {
-        const editor = CKEDITOR.instances.content001;
-        if (!editor) {
-            alert('Editor not found!');
-            return;
-        }
-
-        const editorData = editor.getData();
-        const editorContentCss = `
-            body { font-family: 細明體,新細明體,Arial,sans-serif,Verdana,標楷體,微軟正黑體; font-size: 12px; color: #333; background-color: #fff; margin: 20px; }
-            p { margin: 0; }
-            .cke_editable { font-size: ${fontSize}px; font-family:標楷體; line-height: ${lineHeight / fontSize}; letter-spacing:3pt; word-spacing:3pt; }
-            blockquote { font-style: italic; font-family: Georgia, Times, "Times New Roman", serif; padding: 2px 0; border-style: solid; border-color: #ccc; border-width: 0; }
-            a { color: #0782C1; }
-            ol,ul,dl { padding: 0 40px; }
-            h1,h2,h3,h4,h5,h6 { font-weight: normal; line-height: 1.2; }
-            hr { border: 0px; border-top: 1px solid #ccc; }
-            img.right { border: 1px solid #ccc; float: right; margin-left: 15px; padding: 5px; }
-            img.left { border: 1px solid #ccc; float: left; margin-right: 15px; padding: 5px; }
-            pre { white-space: pre-wrap; word-wrap: break-word; -moz-tab-size: 4; tab-size: 4; }
-            .marker { background-color: Yellow; }
-        `;
-
-        const renderContainer = document.createElement('div');
-        renderContainer.style.position = 'absolute';
-        renderContainer.style.left = '-9999px';
-        renderContainer.style.width = (editor.container.getClientRect().width || 800) + 'px';
-        renderContainer.style.border = '1px solid #ccc';
-        renderContainer.style.backgroundColor = 'white';
-        renderContainer.innerHTML = `<style>${editorContentCss}</style><div class="cke_editable">${editorData}</div>`;
-
-        document.body.appendChild(renderContainer);
-
-        html2canvas(renderContainer, { useCORS: true })
-            .then(callback) // Pass the canvas to the callback function
-            .catch(err => {
-                console.error('Capture failed:', err);
-                alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
-            })
-            .finally(() => {
-                document.body.removeChild(renderContainer);
-            });
-    }
-
-
-
-    // --- Button 1: Download individual images ---
-    document.getElementById('btn-capture-preview').addEventListener('click', function () {
-        captureEditorContent(canvas => {
-            const totalHeight = canvas.height;
-            const chunkHeight = myPageHeight;
-            const numChunks = Math.ceil(totalHeight / chunkHeight);
-            const effectiveChunks = Math.min(numChunks, pageCount);
-
-            function downloadChunk(chunkIndex) {
-                if (chunkIndex >= effectiveChunks) return;
-
-                const chunkCanvas = document.createElement('canvas');
-                const chunkCtx = chunkCanvas.getContext('2d');
-                const currentChunkHeight = Math.min(chunkHeight, totalHeight - (chunkIndex * chunkHeight));
-
-                chunkCanvas.width = canvas.width;
-                chunkCanvas.height = currentChunkHeight;
-
-                chunkCtx.drawImage(canvas, 0, chunkIndex * chunkHeight, canvas.width, currentChunkHeight, 0, 0, canvas.width, currentChunkHeight);
-                downloadDataUrl(chunkCanvas.toDataURL('image/png'), `editor-content-part-${chunkIndex + 1}.png`);
-
-                setTimeout(() => downloadChunk(chunkIndex + 1), 500);
-            }
-            downloadChunk(0);
-        }, lineHeight, fontSize);
-    });
-
-    // --- Button 2: Download as ZIP ---
-    document.getElementById('btn-capture-zip').addEventListener('click', function () {
-        captureEditorContent(canvas => {
-            const zip = new JSZip();
-            const totalHeight = canvas.height;
-            const chunkHeight = myPageHeight;
-            const numChunks = Math.ceil(totalHeight / chunkHeight);
-            const effectiveChunks = Math.min(numChunks, pageCount);
-
-            for (let i = 0; i < effectiveChunks; i++) {
-                const chunkCanvas = document.createElement('canvas');
-                const chunkCtx = chunkCanvas.getContext('2d');
-                const currentChunkHeight = Math.min(chunkHeight, totalHeight - (i * chunkHeight));
-
-                chunkCanvas.width = canvas.width;
-                chunkCanvas.height = currentChunkHeight;
-
-                chunkCtx.drawImage(canvas, 0, i * chunkHeight, canvas.width, currentChunkHeight, 0, 0, canvas.width, currentChunkHeight);
-
-                const base64Data = chunkCanvas.toDataURL('image/png').split(',')[1];
-                zip.file(`editor-content-part-${i + 1}.png`, base64Data, { base64: true });
-            }
-
-            zip.generateAsync({ type: "blob" }).then(blob => {
-                const url = URL.createObjectURL(blob);
-                downloadDataUrl(url, 'editor-content.zip');
-                URL.revokeObjectURL(url); // Clean up
-            });
-        }, lineHeight, fontSize);
-
-    });
-
-
-</script>
 <script>
     (function () {
         const maxHeight = pageCount * myPageHeight;
