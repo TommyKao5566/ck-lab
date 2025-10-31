@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>CKEditor Preview</title>
@@ -7,48 +8,107 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <style>
-        body { 
-            font-family: 細明體,新細明體,Arial,sans-serif,Verdana,標楷體,微軟正黑體; 
-            font-size: 12px; 
-            color: #333; 
-            background-color: #fff; 
-            margin: 20px; 
+        body {
+            font-family: 細明體, 新細明體, Arial, sans-serif, Verdana, 標楷體, 微軟正黑體;
+            font-size: 12px;
+            color: #333;
+            background-color: #fff;
+            margin: 20px;
         }
-        p { margin: 0; }
-        .cke_editable { 
-            font-size: 20px; 
-            font-family: 標楷體; 
-            line-height: 1.8; 
-            letter-spacing: 3pt; 
-            word-spacing: 3pt; 
-            margin-top: 0; 
-            margin-bottom: 0; 
-            border: 1px solid #ccc; /* Add a border for visual clarity */
-            padding: 15px;
-            width: 930px; /* Fixed width as per editor */
+
+        p {
+            margin: 0;
         }
-        blockquote { 
-            font-style: italic; 
-            font-family: Georgia, Times, "Times New Roman", serif; 
-            padding: 2px 0; 
-            border-style: solid; 
-            border-color: #ccc; 
-            border-width: 0; 
+
+        .cke_editable {
+            font-size: 20px;
+            font-family: 標楷體;
+            line-height: 1.8;
+            letter-spacing: 3pt;
+            word-spacing: 3pt;
+            margin-top: 0;
+            margin-bottom: 0;
+            border: 1px solid #ccc;
+            /* Add a border for visual clarity */
+            padding: 0 15px;
+            width: 930px;
+            /* Fixed width as per editor */
         }
-        a { color: #0782C1; }
-        ol,ul,dl { margin: 0; padding: 0 40px; }
-        h1,h2,h3,h4,h5,h6 { font-weight: normal; line-height: 1.2; }
-        hr { border: 0px; border-top: 1px solid #ccc; }
-        img.right { border: 1px solid #ccc; float: right; margin-left: 15px; padding: 5px; }
-        img.left { border: 1px solid #ccc; float: left; margin-right: 15px; padding: 5px; }
-        pre { white-space: pre-wrap; word-wrap: break-word; -moz-tab-size: 4; tab-size: 4; }
-        .marker { background-color: Yellow; }
-        #controls { padding-bottom: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px; }
+
+        blockquote {
+            font-style: italic;
+            font-family: Georgia, Times, "Times New Roman", serif;
+            padding: 2px 0;
+            border-style: solid;
+            border-color: #ccc;
+            border-width: 0;
+        }
+
+        a {
+            color: #0782C1;
+        }
+
+        ol,
+        ul,
+        dl {
+            margin: 0;
+            padding: 0 40px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: normal;
+            line-height: 1.2;
+        }
+
+        hr {
+            border: 0px;
+            border-top: 1px solid #ccc;
+        }
+
+        img.right {
+            border: 1px solid #ccc;
+            float: right;
+            margin-left: 15px;
+            padding: 5px;
+        }
+
+        img.left {
+            border: 1px solid #ccc;
+            float: left;
+            margin-right: 15px;
+            padding: 5px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            -moz-tab-size: 4;
+            tab-size: 4;
+        }
+
+        .marker {
+            background-color: Yellow;
+        }
+
+        #controls {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+
         .my-page {
             border-bottom: 1px dotted black;
             display: flex;
-            height: 900px; /* Use myPageHeight */
+            /* border-bottom 1px */
+            height: 899px;
+            /* Use myPageHeight */
         }
+
         .my-page::before {
             counter-increment: index;
             content: "〈第" counter(index, cjk-ideographic) "頁〉";
@@ -56,17 +116,23 @@
             margin-right: 25px;
             color: aquamarine;
         }
+
         #page-container {
             position: absolute;
-            top: 35px; /* body margin 20px + cke_editable padding 15px */
-            left: 35px; /* body margin 20px + cke_editable padding 15px */
-            width: 930px; /* Match content width */
+            top: 35px;
+            /* body margin 20px + cke_editable padding 15px */
+            left: 35px;
+            /* body margin 20px + cke_editable padding 15px */
+            width: 930px;
+            /* Match content width */
             pointer-events: none;
             counter-reset: index;
-            z-index: 1; /* Ensure it's above the content if needed */
+            z-index: 1;
+            /* Ensure it's above the content if needed */
         }
     </style>
 </head>
+
 <body>
     <div id="controls">
         <button id="btn-capture-preview">擷取內容並下載多個圖片</button>
@@ -86,7 +152,7 @@
         const lineHeight = 36;    // Fixed line height
         const fontSize = 20;      // Fixed font size
 
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             // Load content
             const editorContent = localStorage.getItem('ckeditorContent');
             const contentDiv = document.getElementById('content');
@@ -137,11 +203,11 @@
                 windowWidth: contentElement.scrollWidth,
                 windowHeight: contentElement.scrollHeight
             })
-            .then(callback) // Pass the canvas to the callback function
-            .catch(err => {
-                console.error('Capture failed:', err);
-                alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
-            });
+                .then(callback) // Pass the canvas to the callback function
+                .catch(err => {
+                    console.error('Capture failed:', err);
+                    alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
+                });
         }
 
         // Button 1: Download individual images
@@ -203,4 +269,5 @@
         });
     </script>
 </body>
+
 </html>
