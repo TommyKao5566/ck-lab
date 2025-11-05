@@ -176,14 +176,20 @@
         let iframeDoc = null;
 
         // Function to check the height and show an alert
-        function checkHeight() {
+        function checkHeight(event) {
+            // Do not trigger on Backspace or Delete
+            if (event && (event.key === 'Backspace' || event.key === 'Delete')) {
+                return;
+            }
+
             // A small timeout to let the DOM update after the event
             setTimeout(function () {
                 if (!iframeDoc) return;
                 const contentHeight = iframeDoc.body.scrollHeight;
 
                 if (contentHeight > maxHeight) {
-                    alert(`內容高度已超過 ${maxHeight}px，請注意內容長度。`);
+                    alert(`內容高度已超過 ${maxHeight}px，您剛才輸入的內容已被移除。`);
+                    CKEDITOR.instances.content001.execCommand('undo');
                 }
             }, 100); // A small delay for rendering
         }
