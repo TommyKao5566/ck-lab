@@ -204,6 +204,22 @@
                 // Attach event listeners as requested
                 iframeDoc.addEventListener('keyup', checkHeight);
                 iframeDoc.addEventListener('paste', checkHeight); // Also check on paste
+
+                let keyPressed = false;
+
+                iframeDoc.addEventListener("keydown", function (e) {
+                    if (keyPressed) {
+                        // 阻止重複輸入
+                        e.preventDefault();
+                        return;
+                    }
+
+                    keyPressed = true; // 鎖定狀態
+                });
+
+                iframeDoc.addEventListener("keyup", function (e) {
+                    keyPressed = false; // 放開鍵時解除鎖定
+                });
             }
         }, 100);
     })();
