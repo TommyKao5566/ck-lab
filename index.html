@@ -140,6 +140,20 @@
             });
             CKEDITOR.instances['content001'].updateElement();
 
+            editor1.on('key', function (evt) {
+                if (evt.data.keyCode === 13) { // Enter key
+                    if (this._isEnterKeyDown) { // Check if Enter is already held down
+                        throw new Error("阻止連續的enter");
+                    } else {
+                        this._isEnterKeyDown = true; // Mark Enter as held down
+                    }
+                }
+            });
+
+            editor1.on('keyup', function (evt) {
+                this._isEnterKeyDown = false; // Reset the flag
+            });
+
             let initialData = '';
             for (let i = 1; i <= pageLines; i++) {
                 initialData += `${i}<br>`;
@@ -174,14 +188,14 @@
 
     // 定義一個判斷按鍵是否為上下左右箭頭或 Backspace 的函數
     function isAllowedKey(e) {
-    const allowedKeys = [
-        "ArrowUp",     // 上箭頭
-        "ArrowDown",   // 下箭頭
-        "ArrowLeft",   // 左箭頭
-        "ArrowRight",  // 右箭頭
-        "Backspace",   // Backspace 鍵
-        "Delete"       // Delete 鍵
-    ];
+        const allowedKeys = [
+            "ArrowUp",     // 上箭頭
+            "ArrowDown",   // 下箭頭
+            "ArrowLeft",   // 左箭頭
+            "ArrowRight",  // 右箭頭
+            "Backspace",   // Backspace 鍵
+            "Delete"       // Delete 鍵
+        ];
 
         return allowedKeys.includes(e.key);
     }
@@ -193,7 +207,7 @@
         // Function to check the height and show an alert
         function checkHeight(event) {
             // Do not trigger on Backspace or Delete
-            if (event && isAllowedKey(event))  return;
+            if (event && isAllowedKey(event)) return;
 
             // A small timeout to let the DOM update after the event
             setTimeout(function () {
@@ -221,8 +235,8 @@
 
                 iframeDoc.addEventListener("keydown", function (e) {
                     const contentHeight = iframeDoc.body.scrollHeight;
-                    
-                    if(isAllowedKey(e)) return;
+
+                    if (isAllowedKey(e)) return;
 
                     if ((contentHeight > maxHeight)) {
                         e.preventDefault();
