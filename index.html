@@ -171,6 +171,20 @@
 </script>
 
 <script>
+
+    // 定義一個判斷按鍵是否為上下左右箭頭或 Backspace 的函數
+    function isAllowedKey(e) {
+    const allowedKeys = [
+        "ArrowUp",     // 上箭頭
+        "ArrowDown",   // 下箭頭
+        "ArrowLeft",   // 左箭頭
+        "ArrowRight",  // 右箭頭
+        "Backspace"    // Backspace 鍵
+    ];
+
+        return allowedKeys.includes(e.key);
+    }
+
     (function () {
         const maxHeight = pageCount * myPageHeight;
         let iframeDoc = null;
@@ -205,21 +219,17 @@
                 iframeDoc.addEventListener('keyup', checkHeight);
                 iframeDoc.addEventListener('paste', checkHeight); // Also check on paste
 
-                let keyPressed = false;
 
                 iframeDoc.addEventListener("keydown", function (e) {
-                    if (keyPressed) {
-                        // 阻止重複輸入
+                    const contentHeight = iframeDoc.body.scrollHeight;
+                    
+                    if(isAllowedKey(e)) return;
+
+                    if ((contentHeight > maxHeight)) {
                         e.preventDefault();
-                        return;
                     }
-
-                    keyPressed = true; // 鎖定狀態
                 });
 
-                iframeDoc.addEventListener("keyup", function (e) {
-                    keyPressed = false; // 放開鍵時解除鎖定
-                });
             }
         }, 100);
     })();
