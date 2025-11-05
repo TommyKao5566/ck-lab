@@ -179,7 +179,8 @@
         "ArrowDown",   // 下箭頭
         "ArrowLeft",   // 左箭頭
         "ArrowRight",  // 右箭頭
-        "Backspace"    // Backspace 鍵
+        "Backspace",   // Backspace 鍵
+        "Delete"       // Delete 鍵
     ];
 
         return allowedKeys.includes(e.key);
@@ -192,9 +193,7 @@
         // Function to check the height and show an alert
         function checkHeight(event) {
             // Do not trigger on Backspace or Delete
-            if (event && (event.key === 'Backspace' || event.key === 'Delete')) {
-                return;
-            }
+            if (event && isAllowedKey(event))  return;
 
             // A small timeout to let the DOM update after the event
             setTimeout(function () {
