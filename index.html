@@ -7,34 +7,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script>
+
+        const DEFAULT_PAGE_LINES = 25;
+        const PAGE_COUNTS = 8;
+        const PAGE_HEIGHT = 900
+        const FONT_SIZE = 20
+
         const urlParams = new URLSearchParams(window.location.search);
-        const layout = urlParams.get('layout');
+        let pageLines = +(urlParams.get('pageLines')) || DEFAULT_PAGE_LINES;
 
-        const pageHeight = 900
+        // line-height必定大於等於1，否則上下字體會重疊，難以閱讀
+        // line-height >= 1
+        // (line-height * pageLines * FONT_SIZE = PAGE_HEIGHT) >= pageLines * FONT_SIZE
+        // PAGE_HEIGHT >= pageLines * FONT_SIZE
+        // PAGE_HEIGHT / FONT_SIZE >= pageLines
 
-        const fontSize = 20
-        let pageCount = 8;
-
-        let pageLines = 25;
-
-        switch (layout) {
-            case 'A':
-                pageLines = 20;
-                break;
-            case 'B':
-                pageLines = 25;
-                break;
-            case 'C':
-                pageLines = 30;
-                break;
-
-            default:
-
-                break;
+        // 不滿足上面推導的情形，行數過多，會導致上下字體重疊，則設為預設行數
+        if (pageLines > PAGE_HEIGHT / FONT_SIZE) {
+            pageLines = DEFAULT_PAGE_LINES;
         }
-        lineHeight = pageHeight / pageLines;
 
-        document.write(`<style>.my-page { height: ${pageHeight}px; }</style>`);
+        lineHeight = PAGE_HEIGHT / pageLines;
+
+        //                                border bottom height = 1
+        document.write(`<style>.my-page { height: ${PAGE_HEIGHT - 1}px; }</style>`);
     </script>
     <style>
         #cke_1_top {
@@ -116,7 +112,7 @@
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
         let editor1;
-        const editorHeight = pageHeight * pageCount + 10; // Define editor height here
+        const editorHeight = PAGE_HEIGHT * PAGE_COUNTS; // Define editor height here
 
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
@@ -124,7 +120,7 @@
                 height: editorHeight,
                 contentsCss: ['./ckeditor/contents.css',
                     'data:text/css,' + encodeURIComponent(`
-                        .cke_editable { font-size: ${fontSize}px; line-height: ${lineHeight / fontSize};
+                        .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow-y: hidden; margin-top:0; margin-bottom:0;}
                     `)
                 ]
             });
@@ -148,7 +144,7 @@
             for (let i = 1; i <= pageLines; i++) {
                 initialData += `${i}<br>`;
             }
-            initialData = initialData.repeat(pageCount);
+            initialData = initialData.repeat(PAGE_COUNTS);
             editor1.setData(initialData);
         }
     }
@@ -191,7 +187,7 @@
     }
 
     (function () {
-        const maxHeight = pageCount * pageHeight;
+        const maxHeight = PAGE_COUNTS * PAGE_HEIGHT;
         let iframeDoc = null;
 
         // Function to check the height and show an alert
