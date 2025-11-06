@@ -10,31 +10,31 @@
         const urlParams = new URLSearchParams(window.location.search);
         const layout = urlParams.get('layout');
 
+        const pageHeight = 900
+
         const fontSize = 20
         let pageCount = 8;
-        let lineHeight = 1.8 * fontSize;
+
         let pageLines = 25;
 
         switch (layout) {
             case 'A':
                 pageLines = 20;
-                lineHeight = 2.25 * fontSize;
                 break;
             case 'B':
                 pageLines = 25;
-                lineHeight = 1.8 * fontSize
                 break;
             case 'C':
                 pageLines = 30;
-                lineHeight = 1.5 * fontSize;
                 break;
 
             default:
+
                 break;
         }
+        lineHeight = pageHeight / pageLines;
 
-        const myPageHeight = lineHeight * pageLines;
-        document.write(`<style>.my-page { height: ${myPageHeight}px; }</style>`);
+        document.write(`<style>.my-page { height: ${pageHeight}px; }</style>`);
     </script>
     <style>
         #cke_1_top {
@@ -116,7 +116,7 @@
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
         let editor1;
-        const editorHeight = myPageHeight * pageCount + 10; // Define editor height here
+        const editorHeight = pageHeight * pageCount + 10; // Define editor height here
 
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
@@ -191,7 +191,7 @@
     }
 
     (function () {
-        const maxHeight = pageCount * myPageHeight;
+        const maxHeight = pageCount * pageHeight;
         let iframeDoc = null;
 
         // Function to check the height and show an alert
