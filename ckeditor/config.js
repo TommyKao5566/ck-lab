@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
 		//{ name: 'basicstyles', items: [ 'Bold', 'Italic','Underline','Subscript', 'Superscript']  },
 		//{ name: 'basicstyles', items: [ 'Underline','Subscript', 'Superscript']  },
 		{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'Undo', 'Redo' ] },
-		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Source'  ] }
+		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Preview', 'Source'  ] }
 		//,{ name: 'insert', items: [ 'Table'] }
 		//,{ name: 'document', items: [ 'Preview', 'Source'] }		
 		
@@ -48,7 +48,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = '';
 
 	//config.extraPlugins = 'symbol_1,liststyle,tableresize,panel,button,richcombo,listblock,floatpanel,font,preview,notification,htmlwriter,undo,wordcount';
-	config.extraPlugins = 'symbol_1,liststyle,tableresize,panel,button,richcombo,listblock,floatpanel,font,preview,wordcount';
+	config.extraPlugins = 'symbol_1,liststyle,tableresize,panel,button,richcombo,listblock,floatpanel,font,preview';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
