@@ -50,6 +50,8 @@ CKEDITOR.editorConfig = function( config ) {
 	//config.extraPlugins = 'symbol_1,liststyle,tableresize,panel,button,richcombo,listblock,floatpanel,font,preview,notification,htmlwriter,undo,wordcount';
 	config.extraPlugins = 'symbol_1,liststyle,tableresize,panel,button,richcombo,listblock,floatpanel,font,preview';
 
+	config.removePlugins = 'magicline'
+
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
 
