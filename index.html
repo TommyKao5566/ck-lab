@@ -79,15 +79,19 @@
         .preview_container {
             position: fixed;
             z-index: 2;
-            height: 100vh;
+            height: 90vh;
+            width: 465px;
         }
 
         .preview_inner {
             scale: 0.5;
             position: absolute;
+            overflow-y: scroll;
+            overflow-x: hidden;
             top: -50%;
-            overflow: scroll;
             height: 200%;
+            left: -50%;
+            width: 200%;
         }
     </style>
 </head>
@@ -95,7 +99,17 @@
 <body lang=ZH-TW style='text-justify-trim:punctuation'>
     <div class="preview_container">
         <div class="preview_inner">
-            <iframe src="" frameborder="0" id="preview_content" height="7200px"></iframe>
+            <iframe src="" frameborder="0" id="preview_content" height="7200px" width="930px"></iframe>
+            <div id="page-container" style="padding-top: 0;">
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+                <div class="my-page"></div>
+            </div>
         </div>
     </div>
     <center>
@@ -182,7 +196,7 @@
               <style> 
                 body { width: ${CKEDITOR_WIDTH}px; }
     
-                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow-y: hidden; margin-top:0; margin-bottom:0;}
+                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow: hidden; margin-top:0; margin-bottom:0;}
               </style>
             </head>
             <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
