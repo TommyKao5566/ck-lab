@@ -75,19 +75,34 @@
             width: 935px;
             height: 42px;
         }
+
+        .preview_container {
+            position: fixed;
+            z-index: 2;
+            height: 100vh;
+        }
+
+        .preview_inner {
+            scale: 0.5;
+            position: absolute;
+            top: -50%;
+            overflow: scroll;
+            height: 200%;
+        }
     </style>
 </head>
 
 <body lang=ZH-TW style='text-justify-trim:punctuation'>
+    <div class="preview_container">
+        <div class="preview_inner">
+            <iframe src="" frameborder="0" id="preview_content" height="7200px"></iframe>
+        </div>
+    </div>
     <center>
         <table border=0>
             <tr id="hint">
                 <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
-                    <button onclick="
-    const editorData = CKEDITOR.instances.content001.getData();
-    localStorage.setItem('ckeditorContent', editorData);
-    window.open('preview.html', 'CKEditorPreview', 'width=980,height=600');
-">預覽</button>
+                    <button id="preview_button">預覽</button>
                 </td>
             </tr>
 
@@ -151,23 +166,35 @@
 
 </script>
 <script>
-    (function () {
-        let onTop = false;
-        window.addEventListener('scroll', function () {
-            // Check if the page has been scrolled down
-            if (window.pageYOffset > 0) {
-                // If it has been scrolled and the alert hasn't been shown yet
-                if (!onTop) {
-                    console.log('最外層scrollbar 不在最頂')
-                    onTop = true; // Set the flag to true to prevent further alerts
-                }
-            } else {
-                // If the user scrolls back to the very top, reset the flag
-                console.log('最外層scrollbar 在最頂')
-                onTop = false;
-            }
-        });
-    })();
+
+    const preview_button = document.getElementById('preview_button')
+
+    preview_button.addEventListener('click', () => {
+
+        const previewData = CKEDITOR.instances.content001.getData();
+
+        const CKEDITOR_WIDTH = CKEDITOR.instances.content001.config.width;
+
+        const previewHtml = `<!DOCTYPE html>
+          <html>
+            <head>
+             <link rel="stylesheet" href="./ckeditor/contents.css">
+              <style> 
+                body { width: ${CKEDITOR_WIDTH}px; }
+    
+                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow-y: hidden; margin-top:0; margin-bottom:0;}
+              </style>
+            </head>
+            <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+              ${previewData}
+            </body>
+          </html>`
+
+        document.getElementById('preview_content').srcdoc = previewHtml
+    });
+
+
+
 </script>
 
 <script>
