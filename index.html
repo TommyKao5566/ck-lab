@@ -116,7 +116,8 @@
     <table border=0 style="margin-left: 500px;">
         <tr id="hint">
             <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
-                <button id="preview_button">預覽</button>
+                <button id="preview_button">預覽模式</button>
+                <button id="edit_button" onclick="editMode()">編輯模式</button>
             </td>
         </tr>
 
@@ -214,6 +215,13 @@
 
 </script>
 <script>
+
+    function editMode() {
+        document.getElementsByClassName('preview_container')[0].style.opacity = 0;
+
+        CKEDITOR.instances.content001.setReadOnly(false);
+    }
+
     function scrollToPage(index) {
 
         // go below to enable
@@ -227,9 +235,7 @@
             }
         );
 
-        document.getElementsByClassName('preview_container')[0].style.opacity = 0;
-
-        CKEDITOR.instances.content001.setReadOnly(false);
+        editMode();
 
     }
 </script>
