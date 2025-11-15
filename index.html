@@ -100,15 +100,15 @@
     <div class="preview_container">
         <div class="preview_inner">
             <iframe src="" frameborder="0" id="preview_content" height="7200px" width="930px"></iframe>
-            <div id="page-container" style="padding-top: 0;">
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
-                <div class="my-page"></div>
+            <div id="page-container" style="padding-top: 0; pointer-events: unset;">
+                <div class="my-page" onclick="scrollTo(0)"></div>
+                <div class="my-page" onclick="scrollTo(1)"></div>
+                <div class="my-page" onclick="scrollTo(2)"></div>
+                <div class="my-page" onclick="scrollTo(3)"></div>
+                <div class="my-page" onclick="scrollTo(4)"></div>
+                <div class="my-page" onclick="scrollTo(5)"></div>
+                <div class="my-page" onclick="scrollTo(6)"></div>
+                <div class="my-page" onclick="scrollTo(7)"></div>
             </div>
         </div>
     </div>
@@ -208,7 +208,13 @@
 
 
 </script>
+<script>
+    function scrollTo(index) {
 
+        console.log(index)
+        window.scrollTo(0, index * PAGE_HEIGHT);
+    }
+</script>
 <script>
 
     // 定義一個判斷按鍵是否為上下左右箭頭或 Backspace 的函數
