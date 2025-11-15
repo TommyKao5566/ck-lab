@@ -112,31 +112,29 @@
             </div>
         </div>
     </div>
-    <center>
-        <table border=0>
-            <tr id="hint">
-                <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
-                    <button id="preview_button">預覽</button>
-                </td>
-            </tr>
+    <table border=0 style="margin-left: 500px;">
+        <tr id="hint">
+            <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
+                <button id="preview_button">預覽</button>
+            </td>
+        </tr>
 
-            <tr>
-                <td style="position: relative;">
-                    <textarea id='content001' name='content001'></textarea>
-                    <div id="page-container">
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                        <div class="my-page"></div>
-                    </div>
-                </td>
-            </tr>
-            <table>
-    </center>
+        <tr>
+            <td style="position: relative;">
+                <textarea id='content001' name='content001'></textarea>
+                <div id="page-container">
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                    <div class="my-page"></div>
+                </div>
+            </td>
+        </tr>
+        <table>
 </body>
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
@@ -196,7 +194,7 @@
               <style> 
                 body { width: ${CKEDITOR_WIDTH}px; }
     
-                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow: hidden; margin-top:0; margin-bottom:0;}
+                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow: hidden; margin-top:0; margin-bottom:0; user-select: none;}
               </style>
             </head>
             <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
