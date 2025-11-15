@@ -211,8 +211,14 @@
 <script>
     function scrollToPage(index) {
 
-        console.log(index)
-        window.scrollTo(0, index * PAGE_HEIGHT);
+        window.scrollTo(
+            {
+                top: index * PAGE_HEIGHT,            // 滾動到頂部
+                left: 0,           // 水平位置
+                behavior: 'smooth' // 平滑滾動
+            }
+        );
+
     }
 </script>
 <script>
