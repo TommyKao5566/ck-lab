@@ -81,7 +81,7 @@
             z-index: 2;
             height: 90vh;
             width: 465px;
-            opacity: 0;
+            display: none;
         }
 
         .preview_inner {
@@ -185,7 +185,7 @@
 
     preview_button.addEventListener('click', () => {
 
-        document.getElementsByClassName('preview_container')[0].style.opacity = 1;
+        document.getElementsByClassName('preview_container')[0].style.display = 'unset';
 
         CKEDITOR.instances.content001.setReadOnly(true);
 
@@ -217,7 +217,7 @@
 <script>
 
     function editMode() {
-        document.getElementsByClassName('preview_container')[0].style.opacity = 0;
+        document.getElementsByClassName('preview_container')[0].style.display = 'none';
 
         CKEDITOR.instances.content001.setReadOnly(false);
     }
