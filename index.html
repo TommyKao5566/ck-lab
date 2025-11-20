@@ -87,18 +87,18 @@
             background-color: white;
             /* 兩欄 */
             grid-template-columns: repeat(2, 1fr);
-            gap: 50px;
+            gap: 49px;
             overflow-y: auto;
         }
 
         .preview_inner {
             /* 須注意高度 */
-            height: 842px;
+            height: 844px;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
             background-position-y: 900;
-            border: black 3pt solid;
+            border: black 4pt solid;
         }
     </style>
 </head>
@@ -111,7 +111,6 @@
     <div id="preview_container">
     </div>
     <center>
-
         <table border=0>
             <tr id="hint">
                 <td align=left><b>作答區：(可切換輸入法進行輸入)</b>
@@ -174,7 +173,7 @@
                 initialData += `${i}<br>`;
             }
             initialData = initialData.repeat(PAGE_COUNTS);
-            editor1.setData(sampleContent);
+            editor1.setData(sampleContent1);
         }
     }
 
@@ -183,7 +182,7 @@
 
     // init preview div
     document.getElementById('preview_container')
-        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" onclick="scrollToPage(${i})"></div>`).join(''));
+        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: -${841 * i}px;" onclick="scrollToPage(${i})"></div>`).join(''));
 
 
     const preview_button = document.getElementById('preview_button')
