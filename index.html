@@ -80,11 +80,11 @@
         #preview_container {
             position: fixed;
             z-index: 2;
-            height: 100vh;
+            top: 40px;
+            height: calc(100vh - 40px);
             width: 95vw;
             display: none;
             background-color: white;
-            top: 40px;
             /* 兩欄 */
             grid-template-columns: repeat(2, 1fr);
             gap: 50px;
@@ -92,7 +92,8 @@
         }
 
         .preview_inner {
-            height: calc(1 * 910px);
+            /* 須注意高度 */
+            height: 842px;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
