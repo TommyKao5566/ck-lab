@@ -84,16 +84,7 @@
             display: none;
         }
 
-        .preview_inner {
-            scale: 0.5;
-            position: absolute;
-            overflow-y: scroll;
-            overflow-x: hidden;
-            top: -50%;
-            height: 200%;
-            left: -50%;
-            width: 200%;
-        }
+        .preview_inner {}
     </style>
 </head>
 
@@ -393,22 +384,24 @@
                             alert('無法開啟新視窗，可能被彈出視窗攔截器阻擋了。');
                         } else {
                             // Create an img element in the new window
-                            newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
-                            newWindow.document.close();
+                            // newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
+                            // newWindow.document.close();
+
+                            // todo preview_inner background image = dataUrl
                         }
                     })
                     .catch(err => {
                         console.error('Capture failed:', err);
-                        alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
+                        // alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
                     })
-                .finally(() => {
-                    // 5. Clean up by removing the iframe, but with a delay to avoid potential race conditions.
-                    setTimeout(() => {
-                        if (iframe && iframe.parentElement) {
-                            iframe.parentElement.removeChild(iframe);
-                        }
-                    }, 2000); // Wait 2 seconds before removing
-                });
+                    .finally(() => {
+                        // 5. Clean up by removing the iframe, but with a delay to avoid potential race conditions.
+                        setTimeout(() => {
+                            if (iframe && iframe.parentElement) {
+                                iframe.parentElement.removeChild(iframe);
+                            }
+                        }, 2000); // Wait 2 seconds before removing
+                    });
             }, 200); // 200ms delay for rendering safety
         };
 
