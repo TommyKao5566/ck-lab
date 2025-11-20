@@ -401,10 +401,14 @@
                         console.error('Capture failed:', err);
                         alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
                     })
-                    .finally(() => {
-                        // 5. Clean up by removing the iframe.
-                        // document.body.removeChild(iframe);
-                    });
+                .finally(() => {
+                    // 5. Clean up by removing the iframe, but with a delay to avoid potential race conditions.
+                    setTimeout(() => {
+                        if (iframe && iframe.parentElement) {
+                            iframe.parentElement.removeChild(iframe);
+                        }
+                    }, 2000); // Wait 2 seconds before removing
+                });
             }, 200); // 200ms delay for rendering safety
         };
 
