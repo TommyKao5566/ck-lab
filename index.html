@@ -64,8 +64,8 @@
             top: 0;
             width: -webkit-fill-available;
             pointer-events: none;
-            counter-reset: index;
             /* 初始化計數器 */
+            counter-reset: index;
         }
 
         #hint {
@@ -89,6 +89,8 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 49px;
             overflow-y: auto;
+            /* 初始化計數器 */
+            counter-reset: index;
         }
 
         .preview_inner {
@@ -99,6 +101,22 @@
             background-position-x: center;
             background-position-y: 900;
             border: black 4pt solid;
+            display: flex;
+            align-items: center;
+        }
+
+        .watermark {
+            width: -webkit-fill-available;
+            text-align: center;
+        }
+
+        .watermark::before {
+            counter-increment: index;
+            content: "第\A" counter(index, cjk-ideographic) "\A頁";
+            color: grey;
+            font-size: 96px;
+            white-space: pre;
+            opacity: 0.5;
         }
     </style>
 </head>
@@ -182,7 +200,7 @@
 
     // init preview div
     document.getElementById('preview_container')
-        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: -${841 * i}px;" onclick="scrollToPage(${i})"></div>`).join(''));
+        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: -${841 * i}px;" onclick="scrollToPage(${i})"><div class="watermark"></div></div>`).join(''));
 
 
     const preview_button = document.getElementById('preview_button')
