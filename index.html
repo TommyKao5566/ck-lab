@@ -6,6 +6,7 @@
     <script src="./ckeditor/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="sampleContent.js"></script>
     <script>
 
         const DEFAULT_PAGE_LINES = 25;
@@ -79,12 +80,18 @@
         .preview_container {
             position: fixed;
             z-index: 2;
-            height: 90vh;
-            width: 465px;
+            height: 100vh;
+            width: 100vw;
             display: none;
         }
 
-        .preview_inner {}
+        .preview_inner {
+            width: 50%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: 900;
+        }
     </style>
 </head>
 
@@ -159,7 +166,7 @@
                 initialData += `${i}<br>`;
             }
             initialData = initialData.repeat(PAGE_COUNTS);
-            editor1.setData(initialData);
+            editor1.setData(sampleContent);
         }
     }
 
@@ -170,7 +177,7 @@
 
     preview_button.addEventListener('click', () => {
 
-        document.getElementsByClassName('preview_container')[0].style.display = 'unset';
+        document.getElementsByClassName('preview_container')[0].style.display = 'flex';
 
         CKEDITOR.instances.content001.setReadOnly(true);
 
@@ -312,6 +319,8 @@
         const previewData = editor.getData();
         const editorWidth = editor.container.getClientRect().width || 800; // Get actual editor width
 
+        console.log(editorWidth)
+
         const previewHtml = `<!DOCTYPE html>
       <html>
         <head>
@@ -320,8 +329,9 @@
             body { 
                 width: ${editorWidth}px; 
                 border: none; 
-                margin: 0; 
                 padding: 0;
+                margin-left: 20px;
+                margin-right: 10px;
             }
             .cke_editable { 
                 font-size: ${FONT_SIZE}px; 
@@ -379,15 +389,12 @@
                             return;
                         }
 
-                        const newWindow = window.open('', 'editor-content');
-                        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                            alert('無法開啟新視窗，可能被彈出視窗攔截器阻擋了。');
-                        } else {
-                            // Create an img element in the new window
-                            // newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
-                            // newWindow.document.close();
+                        const previewInner = document.querySelector('.preview_inner');
+                        if (previewInner) {
+                            previewInner.style.backgroundImage = `url('${dataUrl}')`;
 
-                            // todo preview_inner background image = dataUrl
+                        } else {
+                            console.error('Error: .preview_inner element not found.');
                         }
                     })
                     .catch(err => {
