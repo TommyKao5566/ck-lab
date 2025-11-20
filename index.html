@@ -382,20 +382,20 @@
                     .then(canvas => {
                         const dataUrl = canvas.toDataURL('image/png');
                         console.log('Generated Data URL:', dataUrl);
-                        // if (dataUrl === 'data:,') {
-                        //     console.error('Canvas is blank. The generated data URL is empty.');
-                        //     alert('擷取到的圖片是空白的，請檢查主控台。');
-                        //     return;
-                        // }
+                        if (dataUrl === 'data:,') {
+                            console.error('Canvas is blank. The generated data URL is empty.');
+                            alert('擷取到的圖片是空白的，請檢查主控台。');
+                            return;
+                        }
 
-                        // const newWindow = window.open('', 'editor-content');
-                        // if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                        //     alert('無法開啟新視窗，可能被彈出視窗攔截器阻擋了。');
-                        // } else {
-                        //     // Create an img element in the new window
-                        //     newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
-                        //     newWindow.document.close();
-                        // }
+                        const newWindow = window.open('', 'editor-content');
+                        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                            alert('無法開啟新視窗，可能被彈出視窗攔截器阻擋了。');
+                        } else {
+                            // Create an img element in the new window
+                            newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
+                            newWindow.document.close();
+                        }
                     })
                     .catch(err => {
                         console.error('Capture failed:', err);
@@ -403,7 +403,7 @@
                     })
                     .finally(() => {
                         // 5. Clean up by removing the iframe.
-                        document.body.removeChild(iframe);
+                        // document.body.removeChild(iframe);
                     });
             }, 200); // 200ms delay for rendering safety
         };
