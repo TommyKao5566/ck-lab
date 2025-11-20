@@ -77,16 +77,20 @@
             height: 42px;
         }
 
-        .preview_container {
+        #preview_container {
             position: fixed;
             z-index: 2;
             height: 100vh;
             width: 100vw;
             display: none;
+            top: 40px;
+            grid-template-columns: repeat(2, 1fr);
+            /* 兩欄 */
         }
 
         .preview_inner {
-            width: 50%;
+            width: 70%;
+            height: calc(0.7*900)px;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
@@ -96,11 +100,7 @@
 </head>
 
 <body lang=ZH-TW style='text-justify-trim:punctuation'>
-    <div class="preview_container">
-        <div class="preview_inner" onclick="scrollToPage(0)">
-            <!-- img... -->
-        </div>
-        <!-- repeat 8 times -->
+    <div id="preview_container">
     </div>
     <center>
 
@@ -173,11 +173,16 @@
 </script>
 <script>
 
+    // init preview div
+    document.getElementById('preview_container')
+        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" onclick="scrollToPage(${i})"></div>`).join(''));
+
+
     const preview_button = document.getElementById('preview_button')
 
     preview_button.addEventListener('click', () => {
 
-        document.getElementsByClassName('preview_container')[0].style.display = 'flex';
+        document.getElementById('preview_container').style.display = 'grid';
 
         CKEDITOR.instances.content001.setReadOnly(true);
 
@@ -191,7 +196,7 @@
 <script>
 
     function editMode() {
-        document.getElementsByClassName('preview_container')[0].style.display = 'none';
+        document.getElementById('preview_container').style.display = 'none';
 
         CKEDITOR.instances.content001.setReadOnly(false);
     }
@@ -317,9 +322,7 @@
         }
 
         const previewData = editor.getData();
-        const editorWidth = editor.container.getClientRect().width || 800; // Get actual editor width
-
-        console.log(editorWidth)
+        const editorWidth = editor.config.width; // Get actual editor width
 
         const previewHtml = `<!DOCTYPE html>
       <html>
@@ -327,7 +330,7 @@
          <link rel="stylesheet" href="./ckeditor/contents.css">
           <style>
             body { 
-                width: ${editorWidth}px; 
+                width: 900px; 
                 border: none; 
                 padding: 0;
                 margin-left: 20px;
@@ -378,7 +381,8 @@
                     width: editorWidth,
                     height: contentHeight,
                     windowWidth: editorWidth,
-                    windowHeight: contentHeight
+                    windowHeight: contentHeight,
+                    scale: window.devicePixelRatio
                 })
                     .then(canvas => {
                         const dataUrl = canvas.toDataURL('image/png');
@@ -389,13 +393,28 @@
                             return;
                         }
 
-                        const previewInner = document.querySelector('.preview_inner');
-                        if (previewInner) {
-                            previewInner.style.backgroundImage = `url('${dataUrl}')`;
+                        // const previewInner = document.querySelector('.preview_inner');
+                        // if (previewInner) {
+                        //     previewInner.style.backgroundImage = `url('${dataUrl}')`;
 
-                        } else {
-                            console.error('Error: .preview_inner element not found.');
+                        // } else {
+                        //     console.error('Error: .preview_inner element not found.');
+                        // }
+
+                        for (const sheet of document.styleSheets) {
+                            try {
+                                const rules = sheet.cssRules;
+                                for (const rule of rules) {
+                                    if (rule.selectorText === '.preview_inner') {
+                                        // 直接改寫 CSS
+                                        rule.style.backgroundImage = `url('${dataUrl}')`
+                                    }
+                                }
+                            } catch (e) {
+                                // 跨域的 stylesheet 不能操作
+                            }
                         }
+
                     })
                     .catch(err => {
                         console.error('Capture failed:', err);
