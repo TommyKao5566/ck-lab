@@ -318,60 +318,100 @@
             return;
         }
 
-        // 1. Get editor content and the necessary CSS for styling it.
-        const previewData = CKEDITOR.instances.content001.getData();
-
-        const CKEDITOR_WIDTH = CKEDITOR.instances.content001.config.width;
+        const previewData = editor.getData();
+        const editorWidth = editor.container.getClientRect().width || 800; // Get actual editor width
 
         const previewHtml = `<!DOCTYPE html>
-          <html>
-            <head>
-             <link rel="stylesheet" href="./ckeditor/contents.css">
-              <style> 
-                body { width: ${CKEDITOR_WIDTH}px; }
-    
-                .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow: hidden; margin-top:0; margin-bottom:0; user-select: none;}
-              </style>
-            </head>
-            <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
-              ${previewData}
-            </body>
-          </html>`
+      <html>
+        <head>
+         <link rel="stylesheet" href="./ckeditor/contents.css">
+          <style>
+            body { 
+                width: ${editorWidth}px; 
+                border: none; 
+                margin: 0; 
+                padding: 0;
+            }
+            .cke_editable { 
+                font-size: ${FONT_SIZE}px; 
+                line-height: ${lineHeight / FONT_SIZE}; 
+                overflow: hidden; 
+                margin-top:0; 
+                margin-bottom:0; 
+                user-select: none;
+            }
+          </style>
+        </head>
+        <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+          ${previewData}
+        </body>
+      </html>`;
 
-        // 2. Create a temporary, off-screen container.
+        // 1. Create a temporary, off-screen iframe.
+        const iframe = document.createElement('iframe');
+        iframe.style.position = 'absolute';
+        iframe.style.left = '-9999px';
+        iframe.style.width = editorWidth + 'px';
+        // The height will be determined by the content
+        iframe.style.height = '1px'; // Start small, will grow
+        iframe.style.border = '0';
 
-        const renderContainer = document.createElement('div');
-        renderContainer.style.position = 'absolute';
-        renderContainer.style.left = '-9999px';
-        renderContainer.style.width = (editor.container.getClientRect().width || 800) + 'px';
-        renderContainer.style.border = '1px solid #ccc';
-        renderContainer.style.backgroundColor = 'white';
+        document.body.appendChild(iframe);
 
-        // 3. Inject styles and content into the container.
-        renderContainer.innerHTML = previewHtml;
+        // 2. Write the HTML content into the iframe.
+        iframe.contentWindow.document.open();
+        iframe.contentWindow.document.write(previewHtml);
+        iframe.contentWindow.document.close();
 
-        // 4. Append to the body to make it renderable.
-        document.body.appendChild(renderContainer);
+        // 3. Wait for the iframe content to load fully (including external CSS).
+        iframe.onload = function () {
+            // Adjust iframe height to content
+            const contentHeight = iframe.contentWindow.document.body.scrollHeight;
+            iframe.style.height = contentHeight + 'px';
 
-        // 5. Run html2canvas on the hidden container.
-        html2canvas(renderContainer, { useCORS: true })
-            .then(canvas => {
+            // Add a small delay to ensure rendering is complete
+            setTimeout(() => {
+                // 4. Run html2canvas on the iframe's body.
+                html2canvas(iframe.contentWindow.document.body, {
+                    useCORS: true,
+                    width: editorWidth,
+                    height: contentHeight,
+                    windowWidth: editorWidth,
+                    windowHeight: contentHeight
+                })
+                    .then(canvas => {
+                        const dataUrl = canvas.toDataURL('image/png');
+                        console.log('Generated Data URL:', dataUrl);
+                        // if (dataUrl === 'data:,') {
+                        //     console.error('Canvas is blank. The generated data URL is empty.');
+                        //     alert('擷取到的圖片是空白的，請檢查主控台。');
+                        //     return;
+                        // }
 
-                downloadDataUrl(canvas.toDataURL('image/png'), 'editor-content.png');
+                        // const newWindow = window.open('', 'editor-content');
+                        // if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                        //     alert('無法開啟新視窗，可能被彈出視窗攔截器阻擋了。');
+                        // } else {
+                        //     // Create an img element in the new window
+                        //     newWindow.document.write('<html><head><title>editor-content.png</title></head><body style="margin:0;"><img src="' + dataUrl + '" style="max-width: 100%;"></body></html>');
+                        //     newWindow.document.close();
+                        // }
+                    })
+                    .catch(err => {
+                        console.error('Capture failed:', err);
+                        alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
+                    })
+                    .finally(() => {
+                        // 5. Clean up by removing the iframe.
+                        document.body.removeChild(iframe);
+                    });
+            }, 200); // 200ms delay for rendering safety
+        };
 
-            })
-            .catch(err => {
-
-                console.error('Capture failed:', err);
-
-                alert('圖片擷取失敗，請查看主控台以獲取詳細資訊。');
-            })
-            .finally(() => {
-
-                // 6. Clean up by removing the temporary container.
-
-                document.body.removeChild(renderContainer);
-            });
+        // Handle case where onload doesn't fire for about:blank
+        if (iframe.contentWindow.document.readyState === 'complete') {
+            iframe.onload();
+        }
     }
 </script>
 
