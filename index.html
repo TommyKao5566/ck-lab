@@ -81,23 +81,30 @@
             position: fixed;
             z-index: 2;
             height: 100vh;
-            width: 100vw;
+            width: 95vw;
             display: none;
+            background-color: white;
             top: 40px;
-            grid-template-columns: repeat(2, 1fr);
             /* 兩欄 */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 50px;
+            overflow-y: auto;
         }
 
         .preview_inner {
-            width: 70%;
-            height: calc(0.7*900)px;
+            height: calc(1 * 910px);
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
             background-position-y: 900;
+            border: black 3pt solid;
         }
     </style>
 </head>
+
+<!-- text-justify-trim: punctuation 是 CSS Text Level 4 的一個屬性，用來控制「文本對齊時要不要修剪（trim）標點符號」。
+
+但 重要重點：目前幾乎沒有瀏覽器支援（Chrome / Firefox / Safari 通通不支援）。 -->
 
 <body lang=ZH-TW style='text-justify-trim:punctuation'>
     <div id="preview_container">
@@ -188,15 +195,19 @@
 
         captureEditorContent()
 
+        console.log(document.getElementsByTagName('body'))
+
+        document.getElementsByTagName('body')[0].style.overflowY = 'hidden';
+
+
     });
-
-
 
 </script>
 <script>
 
     function editMode() {
         document.getElementById('preview_container').style.display = 'none';
+        document.getElementsByTagName('body')[0].style.overflowY = 'auto';
 
         CKEDITOR.instances.content001.setReadOnly(false);
     }
