@@ -86,15 +86,14 @@
             background-color: white;
             /* 兩欄 */
             grid-template-columns: repeat(2, 1fr);
-            gap: 49px;
+            gap: 10px;
             overflow-y: auto;
             /* 初始化計數器 */
             counter-reset: index;
         }
 
         .preview_inner {
-            /* 須注意高度 */
-            height: 844px;
+            aspect-ratio: 1.03;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
@@ -199,7 +198,7 @@
 
     // init preview div
     document.getElementById('preview_container')
-        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: -${841 * i}px;" onclick="scrollToPage(${i})"><div class="watermark"></div></div>`).join(''));
+        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: ${16.55 * i}%;" onclick="scrollToPage(${i})"><div class="watermark"></div></div>`).join(''));
 
 
     const preview_button = document.getElementById('preview_button')
