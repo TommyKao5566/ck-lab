@@ -54,7 +54,7 @@
             margin-left: auto;
             /* 自動推到右邊 */
             margin-right: 25px;
-            color: aquamarine;
+            color: midnightblue
         }
 
         #page-container {
@@ -293,10 +293,10 @@
                 const contentHeight = iframeDoc.body.scrollHeight;
 
                 if (contentHeight > maxHeight) {
-                    alert(`內容高度已超過 ${maxHeight}px，您剛才輸入的內容已被移除。`);
-                    // CKEDITOR.instances.content001.execCommand('undo');
+                    alert(`作答超過本頁長度，請刪減字數。`);
+                    CKEDITOR.instances.content001.execCommand('undo');
                     // 避免使用者透過按鈕取消回上一步
-                    // CKEDITOR.instances.content001.resetUndo();
+                    CKEDITOR.instances.content001.resetUndo();
                 }
             }, 100); // A small delay for rendering
         }
