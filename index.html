@@ -158,17 +158,45 @@
         let editor1;
         const editorHeight = PAGE_HEIGHT * PAGE_COUNTS; // Define editor height here
 
+        const paddingOfUnderline = 20
+
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
             editor1 = CKEDITOR.replace('content001', {
                 height: editorHeight,
                 contentsCss: ['./ckeditor/contents.css',
                     'data:text/css,' + encodeURIComponent(`
-                        .cke_editable { font-size: ${FONT_SIZE}px; line-height: ${lineHeight / FONT_SIZE}; overflow-y: hidden; margin-top:0; margin-bottom:0;}
+                        .cke_editable { 
+                            font-size: ${FONT_SIZE}px;
+                            line-height: ${lineHeight / FONT_SIZE};
+                            overflow-y: hidden;
+                            margin-top:0;
+                            margin-bottom:0;
+                        }
+                        
+                        .note-lines {
+                            /* 一行高度 */
+                            background: repeating-linear-gradient(to bottom,
+                                transparent 0 ${lineHeight - 2}px,
+                                #ccc ${lineHeight - 2}px ${lineHeight}px);
+                        }
+                        .note-lines {
+                            line-height: ${lineHeight}px;
+                            background-image: url("data:image/svg+xml;utf8,\
+                        <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='${lineHeight}'>\
+                        <line x1='${paddingOfUnderline}' y1='${lineHeight - 1}' x2='${930 - paddingOfUnderline}' y2='${lineHeight - 1}' stroke='%23add8e6' stroke-width='1'/>\
+                        </svg>");
+                            background-repeat: repeat-y;
+                            background-size: 100% ${lineHeight}px;
+                        }
                     `)
                 ]
             });
-            CKEDITOR.instances['content001'].updateElement();
+            editor1.updateElement();
+
+            editor1.on('instanceReady', function () {
+                this.document.getBody().addClass('note-lines');
+            })
 
             editor1.on('key', function (evt) {
                 if (evt.data.keyCode === 13) { // Enter key
