@@ -180,13 +180,6 @@
                             margin-top:0;
                             margin-bottom:0;
                         }
-                        
-                        .note-lines {
-                            /* 一行高度 */
-                            background: repeating-linear-gradient(to bottom,
-                                transparent 0 ${lineHeight - 2}px,
-                                #ccc ${lineHeight - 2}px ${lineHeight}px);
-                        }
                         .note-lines {
                             line-height: ${lineHeight}px;
                             background-image: url("data:image/svg+xml;utf8,\
@@ -414,16 +407,25 @@
                 margin-right: 10px;
             }
             .cke_editable { 
-                font-size: ${FONT_SIZE}px; 
-                line-height: ${lineHeight / FONT_SIZE}; 
-                overflow: hidden; 
-                margin-top:0; 
-                margin-bottom:0; 
+                font-size: ${FONT_SIZE}px;
+                line-height: ${lineHeight / FONT_SIZE};
+                overflow: hidden;
+                margin-top:0;
+                margin-bottom:0;
                 user-select: none;
+            }
+            .note-lines {
+                line-height: ${lineHeight}px;
+                background-image: url("data:image/svg+xml;utf8,\
+            <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='${lineHeight}'>\
+            <line x1='0' y1='${lineHeight - 1}' x2='100%' y2='${lineHeight - 1}' stroke='%23${UNDERLINE_COLOR}' stroke-width='1'/>\
+            </svg>");
+                background-repeat: repeat-y;
+                background-size: 100% ${lineHeight}px;
             }
           </style>
         </head>
-        <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders">
+        <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders note-lines">
           ${previewData}
         </body>
       </html>`;
