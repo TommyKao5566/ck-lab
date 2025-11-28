@@ -14,6 +14,7 @@
         const FONT_SIZE = 20;
 
         const UNDERLINE_COLOR = '0573d7';
+        const BORDER_STOKE_WIDTH = 4;
 
         const urlParams = new URLSearchParams(window.location.search);
         let pageLines = +(urlParams.get('pageLines')) || DEFAULT_PAGE_LINES;
@@ -31,8 +32,19 @@
 
         lineHeight = PAGE_HEIGHT / pageLines;
 
-        //                                border bottom height = 1
-        document.write(`<style>.my-page { height: ${PAGE_HEIGHT - 1}px; }</style>`);
+        document.write(`
+            <style>
+                .my-page { 
+                    height: ${PAGE_HEIGHT - BORDER_STOKE_WIDTH}px;
+                    border: ${BORDER_STOKE_WIDTH}px solid #${UNDERLINE_COLOR};
+                    border-bottom: none;
+                    display: flex;
+                }
+                .my-page::before {
+                    color: #${UNDERLINE_COLOR};
+                }
+            </style>
+        `);
     </script>
     <style>
         #cke_1_top {
@@ -45,10 +57,6 @@
             padding-top: 70px;
         }
 
-        .my-page {
-            border-bottom: 1px dotted black;
-            display: flex;
-        }
 
         .my-page::before {
             counter-increment: index;
@@ -56,7 +64,6 @@
             margin-left: auto;
             /* 自動推到右邊 */
             margin-right: 25px;
-            color: midnightblue
         }
 
         #page-container {
