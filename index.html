@@ -10,8 +10,10 @@
 
         const DEFAULT_PAGE_LINES = 25;
         const PAGE_COUNTS = 8;
-        const PAGE_HEIGHT = 900
-        const FONT_SIZE = 20
+        const PAGE_HEIGHT = 900;
+        const FONT_SIZE = 20;
+
+        const UNDERLINE_COLOR = '0573d7';
 
         const urlParams = new URLSearchParams(window.location.search);
         let pageLines = +(urlParams.get('pageLines')) || DEFAULT_PAGE_LINES;
@@ -182,7 +184,7 @@
                             line-height: ${lineHeight}px;
                             background-image: url("data:image/svg+xml;utf8,\
                         <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='${lineHeight}'>\
-                        <line x1='0' y1='${lineHeight - 1}' x2='100%' y2='${lineHeight - 1}' stroke='%230573d7' stroke-width='1'/>\
+                        <line x1='0' y1='${lineHeight - 1}' x2='100%' y2='${lineHeight - 1}' stroke='%23${UNDERLINE_COLOR}' stroke-width='1'/>\
                         </svg>");
                             background-repeat: repeat-y;
                             background-size: 100% ${lineHeight}px;
