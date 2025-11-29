@@ -52,6 +52,7 @@
                 overflow: hidden;
                 margin-top:0;
                 margin-bottom:0;
+                height:${PAGE_COUNTS * PAGE_HEIGHT}px;
             }
             .note-lines {
                 line-height: ${lineHeight}px;
@@ -120,7 +121,8 @@
         }
 
         .preview_inner {
-            aspect-ratio: 1.03;
+            /* 人工調整 */
+            aspect-ratio: 1.035;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-x: center;
@@ -227,7 +229,7 @@
 
     // init preview div
     document.getElementById('preview_container')
-        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: ${16.55 * i}%;" onclick="scrollToPage(${i})"><div class="watermark"></div></div>`).join(''));
+        .insertAdjacentHTML('beforeend', Array.from({ length: PAGE_COUNTS }, (_, i) => `<div class="preview_inner" style="background-position-y: ${(100 * i) / (PAGE_COUNTS - 1)}%;" onclick="scrollToPage(${i})"><div class="watermark"></div></div>`).join(''));
 
 
     const preview_button = document.getElementById('preview_button')
@@ -396,17 +398,10 @@
         const editorWidth = editor.config.width; // Get actual editor width
 
         const previewHtml = `<!DOCTYPE html>
-      <html>
+      <html class="note-lines">
         <head>
          <link rel="stylesheet" href="./ckeditor/contents.css">
           <style>
-            body { 
-                width: 900px; 
-                border: none; 
-                padding: 0;
-                margin-left: 20px;
-                margin-right: 10px;
-            }
             ${customCss}
           </style>
         </head>
@@ -440,7 +435,7 @@
             // Add a small delay to ensure rendering is complete
             setTimeout(() => {
                 // 4. Run html2canvas on the iframe's body.
-                html2canvas(iframe.contentWindow.document.body, {
+                html2canvas(iframe.contentWindow.document.documentElement, {
                     useCORS: true,
                     width: editorWidth,
                     height: contentHeight,
