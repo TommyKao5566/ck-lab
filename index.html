@@ -37,11 +37,13 @@
                 .my-page { 
                     height: ${PAGE_HEIGHT - BORDER_STOKE_WIDTH}px;
                     border: ${BORDER_STOKE_WIDTH}px solid #${UNDERLINE_COLOR};
-                    border-bottom: none;
                     display: flex;
                 }
                 .my-page::before {
                     color: #${UNDERLINE_COLOR};
+                }
+                .my-page:not(:last-child) {
+                    border-bottom: none;
                 }
             </style>
         `);
