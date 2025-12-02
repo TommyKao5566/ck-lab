@@ -16,6 +16,8 @@
         const UNDERLINE_COLOR = '0573d7';
         const BORDER_STOKE_WIDTH = 4;
 
+        const QUESTION_NUMBER = 1;
+
         const urlParams = new URLSearchParams(window.location.search);
         let pageLines = +(urlParams.get('pageLines')) || DEFAULT_PAGE_LINES;
 
@@ -44,6 +46,14 @@
                 }
                 .my-page:not(:last-child) {
                     border-bottom: none;
+                }
+                .my-page::before {
+                    counter-increment: index;
+                    content: "第\\A  ${QUESTION_NUMBER} \\A題\\A第\\A  " counter(index) "\\A頁";
+                    white-space: pre;
+                    margin-left: auto;
+                    /* 自動推到右邊 */
+                    margin-right: -25px;
                 }
             </style>
         `);
@@ -78,15 +88,6 @@
             padding-top: 70px;
         }
 
-
-        .my-page::before {
-            counter-increment: index;
-            content: "第\A" counter(index, cjk-ideographic) "\A頁";
-            white-space: pre;
-            margin-left: auto;
-            /* 自動推到右邊 */
-            margin-right: -25px;
-        }
 
         #page-container {
             padding-top: 70px;
