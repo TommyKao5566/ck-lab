@@ -55,6 +55,14 @@
                     /* 自動推到右邊 */
                     margin-right: -25px;
                 }
+                .watermark::before {
+                    counter-increment: index;
+                    content: "第\\A  ${QUESTION_NUMBER} \\A題\\A第\\A  " counter(index) "\\A頁";
+                    color: grey;
+                    font-size: 48px;
+                    white-space: pre;
+                    opacity: 0.5;
+                }
             </style>
         `);
 
@@ -139,15 +147,6 @@
         .watermark {
             width: -webkit-fill-available;
             text-align: center;
-        }
-
-        .watermark::before {
-            counter-increment: index;
-            content: "第\A" counter(index, cjk-ideographic) "\A頁";
-            color: grey;
-            font-size: 96px;
-            white-space: pre;
-            opacity: 0.5;
         }
     </style>
 </head>
