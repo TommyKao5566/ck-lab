@@ -2,11 +2,7 @@ const sampleContent = `1. 中道崩殂︰中途駕崩了。崩殂︰指皇帝之
 
 const sampleContent1 = Array.from(
   { length: 25 },
-  (_, i) =>
-    `L${String(i + 1).padStart(
-      2,
-      "0"
-    )} 三四五六七八九十一二三四五六七八九十一二三四五<br>`
+  (_, i) => `一二三四五六七八九十一二三四五六七八九十一二三四五<br>`
 )
   .join("")
   .repeat(7);
