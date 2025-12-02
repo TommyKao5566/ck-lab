@@ -13,7 +13,7 @@ CKEDITOR.editorConfig = function( config ) {
 	  config.uiColor = '#AADC6E';
 	 //3、設定高度及寬度
 
-	  config.width = 750;
+	  config.width = 742;
 	  config.fontSize_defaultLabel = '20px';
 	  config.font_defaultLabel = '新細明體';
 	  config.maxLines=5;	  
