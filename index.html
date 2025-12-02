@@ -81,10 +81,11 @@
 
         .my-page::before {
             counter-increment: index;
-            content: "〈第" counter(index) "頁〉";
+            content: "第\A" counter(index, cjk-ideographic) "\A頁";
+            white-space: pre;
             margin-left: auto;
             /* 自動推到右邊 */
-            margin-right: 25px;
+            margin-right: -25px;
         }
 
         #page-container {
