@@ -50,17 +50,16 @@
                 .my-page::before {
                     counter-increment: index;
                     content: "第\\A  ${QUESTION_NUMBER} \\A題\\A第\\A  " counter(index) "\\A頁";
-                    white-space: pre;
-                    margin-left: auto;
-                    /* 自動推到右邊 */
-                    margin-right: -25px;
+                    white-space: pre-line;
+                    margin-left: -25px;
+                    text-align: center;
                 }
                 .watermark::before {
                     counter-increment: index;
                     content: "第\\A  ${QUESTION_NUMBER} \\A題\\A第\\A  " counter(index) "\\A頁";
                     color: grey;
-                    font-size: 76px;
-                    white-space: pre;
+                    font-size: 60px;
+                    white-space: pre-line;
                     opacity: 0.5;
                 }
             </style>
@@ -134,14 +133,12 @@
 
         .preview_inner {
             /* 人工調整 */
-            aspect-ratio: 0.83682;
+            aspect-ratio: 0.825;
             background-size: cover;
             background-repeat: no-repeat;
-            background-position-x: center;
             background-position-y: 900;
             border: black 4pt solid;
             display: flex;
-            align-items: center;
         }
 
         .watermark {
