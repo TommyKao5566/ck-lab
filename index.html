@@ -71,7 +71,6 @@
                 overflow: hidden;
                 margin-top:0;
                 margin-bottom:0;
-                height:${PAGE_COUNTS * PAGE_HEIGHT}px;
             }
             .note-lines {
                 line-height: ${lineHeight}px;
@@ -397,12 +396,19 @@
         const previewData = editor.getData();
         const editorWidth = editor.config.width; // Get actual editor width
 
+        // 編輯器內cke_editable，height不可指定，因為需要計算長度彈出警告
+        // 預覽視窗內cke_editable，height必須指定，否則無法計算高度分割圖片。
         const previewHtml = `<!DOCTYPE html>
       <html class="note-lines">
         <head>
          <link rel="stylesheet" href="./ckeditor/contents.css">
           <style>
             ${customCss}
+          </style>   
+          <style>
+            .cke_editable { 
+                height:${PAGE_COUNTS * PAGE_HEIGHT}px;
+            }
           </style>
         </head>
         <body class="cke_editable cke_editable_themed cke_contents_ltr cke_show_borders note-lines">
