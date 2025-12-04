@@ -32,12 +32,11 @@ CKEDITOR.editorConfig = function( config ) {
   config.toolbarCanCollapse = false;
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 		config.toolbar = [
-		{ name: 'symbol', items : ['symbol_1','symbol_2','symbol_3','symbol_4','symbol_5','symbol_6','symbol_7'
-			,'symbol_8','symbol_9','symbol_10','symbol_11','symbol_12','symbol_13','symbol_14']},
+		{ name: 'symbol', items : ['symbol_1','symbol_2','symbol_3','symbol_4','symbol_5','symbol_6','symbol_7','symbol_12','symbol_13','symbol_14','symbol_15']},
 		//{ name: 'basicstyles', items: [ 'Bold', 'Italic','Underline','Subscript', 'Superscript']  },
 		//{ name: 'basicstyles', items: [ 'Underline','Subscript', 'Superscript']  },
 		{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'Undo', 'Redo' ] },
-		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'Preview', 'Source'  ] }
+		{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'  ] }
 		//,{ name: 'insert', items: [ 'Table'] }
 		//,{ name: 'document', items: [ 'Preview', 'Source'] }		
 		

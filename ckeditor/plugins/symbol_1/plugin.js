@@ -45,6 +45,8 @@
 	var symbolCmd_14 =
 	{exec : function( editor ){editor.insertHtml('『』');return true;}};
   
+    var symbolCmd_15 =
+	{exec : function( editor ){editor.insertHtml('§');return true;}};
   
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'symbol_1', 
@@ -175,6 +177,15 @@
 			label : '雙引號', 
 			command : commandName_14,
 			icon : this.path + 'images/mark14.gif'
+			});
+			
+			var commandName_15 = 'symbol_15'; 
+			editor.addCommand( commandName_15, symbolCmd_15 );
+			editor.ui.addButton( commandName_15,
+			{
+			label : '法條', 
+			command : commandName_15,
+			icon : this.path + 'images/mark15.gif'
 			});
 
 		},
