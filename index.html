@@ -8,9 +8,9 @@
     <script src="sampleContent.js"></script>
     <script>
 
-        const DEFAULT_PAGE_LINES = 25;
+        const PAGE_LINES = 26;
         const PAGE_COUNTS = 8;
-        const PAGE_HEIGHT = 900;
+        const LINE_HEIGHT = 36;
         const FONT_SIZE = 24;
 
         const UNDERLINE_COLOR = '0573d7';
@@ -18,26 +18,13 @@
 
         const QUESTION_NUMBER = 1;
 
-        const urlParams = new URLSearchParams(window.location.search);
-        let pageLines = +(urlParams.get('pageLines')) || DEFAULT_PAGE_LINES;
-
-        // line-height必定大於等於1，否則上下字體會重疊，難以閱讀
-        // line-height >= 1
-        // (line-height * pageLines * FONT_SIZE = PAGE_HEIGHT) >= pageLines * FONT_SIZE
-        // PAGE_HEIGHT >= pageLines * FONT_SIZE
-        // PAGE_HEIGHT / FONT_SIZE >= pageLines
-
-        // 不滿足上面推導的情形，行數過多，會導致上下字體重疊，則設為預設行數
-        if (pageLines > PAGE_HEIGHT / FONT_SIZE) {
-            pageLines = DEFAULT_PAGE_LINES;
-        }
-
-        lineHeight = PAGE_HEIGHT / pageLines;
+        // 不可調整。
+        const pageHeight = LINE_HEIGHT * PAGE_LINES;
 
         document.write(`
             <style>
                 .my-page { 
-                    height: ${PAGE_HEIGHT - BORDER_STOKE_WIDTH}px;
+                    height: ${pageHeight - BORDER_STOKE_WIDTH}px;
                     border: ${BORDER_STOKE_WIDTH}px solid #${UNDERLINE_COLOR};
                     display: flex;
                 }
@@ -78,19 +65,19 @@
 
         const customCss = `.cke_editable { 
                 font-size: ${FONT_SIZE}px;
-                line-height: ${lineHeight / FONT_SIZE};
+                line-height: ${LINE_HEIGHT / FONT_SIZE};
                 overflow: hidden;
                 margin-top:0;
                 margin-bottom:0;
             }
             .note-lines {
-                line-height: ${lineHeight}px;
+                line-height: ${LINE_HEIGHT}px;
                 background-image: url("data:image/svg+xml;utf8,\
-            <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='${lineHeight}'>\
-            <line x1='0' y1='${lineHeight - 1}' x2='100%' y2='${lineHeight - 1}' stroke='%23${UNDERLINE_COLOR}' stroke-width='1'/>\
+            <svg xmlns='http://www.w3.org/2000/svg' width='100%' height='${LINE_HEIGHT}'>\
+            <line x1='0' y1='${LINE_HEIGHT - 1}' x2='100%' y2='${LINE_HEIGHT - 1}' stroke='%23${UNDERLINE_COLOR}' stroke-width='1'/>\
             </svg>");
                 background-repeat: repeat-y;
-                background-size: 100% ${lineHeight}px;
+                background-size: 100% ${LINE_HEIGHT}px;
             }`
 
     </script>
@@ -144,7 +131,7 @@
 
         .preview_inner {
             /* 人工調整 */
-            aspect-ratio: 0.825;
+            aspect-ratio: 0.798;
             background-size: cover;
             background-repeat: no-repeat;
             background-position-y: 900;
@@ -201,7 +188,7 @@
 <script type='text/javascript'>
     if (window.navigator.userAgent.indexOf('Chrome') > -1) {
         let editor1;
-        const editorHeight = PAGE_HEIGHT * PAGE_COUNTS; // Define editor height here
+        const editorHeight = pageHeight * PAGE_COUNTS; // Define editor height here
 
         if (null != document.getElementById('content001')) {
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
@@ -232,7 +219,7 @@
             });
 
             let initialData = '';
-            for (let i = 1; i <= pageLines; i++) {
+            for (let i = 1; i <= PAGE_LINES; i++) {
                 initialData += `${i}<br>`;
             }
             initialData = initialData.repeat(PAGE_COUNTS);
@@ -282,7 +269,7 @@
 
         window.scrollTo(
             {
-                top: index * PAGE_HEIGHT,            // 滾動到頂部
+                top: index * pageHeight,            // 滾動到頂部
                 left: 0,           // 水平位置
                 behavior: 'smooth' // 平滑滾動
             }
@@ -327,7 +314,7 @@
     let showLastWarning = true;
 
     (function () {
-        const maxHeight = PAGE_COUNTS * PAGE_HEIGHT;
+        const maxHeight = PAGE_COUNTS * pageHeight;
         let iframeDoc = null;
 
         // Function to check the height and show an alert
@@ -335,7 +322,7 @@
 
             const contentHeight = iframeDoc.body.scrollHeight;
 
-            if (contentHeight > (maxHeight - PAGE_HEIGHT)) {
+            if (contentHeight > (maxHeight - pageHeight)) {
 
                 if (showLastWarning === true) {
                     showLastWarning = false;
@@ -424,7 +411,7 @@
           </style>   
           <style>
             .cke_editable { 
-                height:${PAGE_COUNTS * PAGE_HEIGHT}px;
+                height:${PAGE_COUNTS * pageHeight}px;
             }
           </style>
         </head>
