@@ -8,6 +8,8 @@
     <script src="sampleContent.js"></script>
     <script>
 
+        const EDITOR_WIDTH = 742;
+
         const PAGE_LINES = 26;
         const PAGE_COUNTS = 8;
         const LINE_HEIGHT = 36;
@@ -23,6 +25,52 @@
 
         document.write(`
             <style>
+                #cke_1_top {
+                    position: fixed;
+                    width: 728px;
+                    top: 42px;
+                    z-index: 1;
+                }
+
+                #cke_1_contents {
+                    padding-top: 70px;
+                }
+                
+                #page-container {
+                    padding-top: 70px;
+                    position: absolute;
+                    top: 0;
+                    width: -webkit-fill-available;
+                    pointer-events: none;
+                    /* 初始化計數器 */
+                    counter-reset: index;
+                }
+
+                #hint {
+                    position: fixed;
+                    top: 0;
+                    z-index: 1;
+                    background: white;
+                    width: 935px;
+                    height: 42px;
+                }
+
+                #preview_container {
+                    position: fixed;
+                    z-index: 2;
+                    top: 40px;
+                    height: calc(100vh - 40px);
+                    width: 95vw;
+                    display: none;
+                    background-color: white;
+                    /* 兩欄 */
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                    overflow-y: auto;
+                    /* 初始化計數器 */
+                    counter-reset: index;
+                }
+
                 .my-page { 
                     height: ${pageHeight - BORDER_STOKE_WIDTH}px;
                     border: ${BORDER_STOKE_WIDTH}px solid #${UNDERLINE_COLOR};
@@ -41,6 +89,20 @@
                     margin-left: -25px;
                     text-align: center;
                 }
+
+                .preview_inner {
+                    aspect-ratio: ${EDITOR_WIDTH / pageHeight};
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position-y: 900;
+                    border: black 4pt solid;
+                    display: flex;
+                }
+
+                .watermark {
+                    width: -webkit-fill-available;
+                    text-align: center;
+                }
                 .watermark::before {
                     counter-increment: index;
                     content: "第\\A  ${QUESTION_NUMBER} \\A題\\A第\\A  " counter(index) "\\A頁";
@@ -49,6 +111,7 @@
                     white-space: pre-line;
                     opacity: 0.5;
                 }
+
                 .right-text {
                     position: absolute;
                     width: 100%;
@@ -81,69 +144,6 @@
             }`
 
     </script>
-    <style>
-        #cke_1_top {
-            position: fixed;
-            width: 728px;
-            top: 42px;
-            z-index: 1;
-        }
-
-        #cke_1_contents {
-            padding-top: 70px;
-        }
-
-
-        #page-container {
-            padding-top: 70px;
-            position: absolute;
-            top: 0;
-            width: -webkit-fill-available;
-            pointer-events: none;
-            /* 初始化計數器 */
-            counter-reset: index;
-        }
-
-        #hint {
-            position: fixed;
-            top: 0;
-            z-index: 1;
-            background: white;
-            width: 935px;
-            height: 42px;
-        }
-
-        #preview_container {
-            position: fixed;
-            z-index: 2;
-            top: 40px;
-            height: calc(100vh - 40px);
-            width: 95vw;
-            display: none;
-            background-color: white;
-            /* 兩欄 */
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            overflow-y: auto;
-            /* 初始化計數器 */
-            counter-reset: index;
-        }
-
-        .preview_inner {
-            /* 人工調整 */
-            aspect-ratio: 0.798;
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position-y: 900;
-            border: black 4pt solid;
-            display: flex;
-        }
-
-        .watermark {
-            width: -webkit-fill-available;
-            text-align: center;
-        }
-    </style>
 </head>
 
 <!-- text-justify-trim: punctuation 是 CSS Text Level 4 的一個屬性，用來控制「文本對齊時要不要修剪（trim）標點符號」。
@@ -194,6 +194,7 @@
             //editor1 = CKEDITOR.replace('content001',{contentsCss : 'body {overflow:hidden;}'});
             editor1 = CKEDITOR.replace('content001', {
                 height: editorHeight,
+                width: EDITOR_WIDTH,
                 contentsCss: ['./ckeditor/contents.css',
                     'data:text/css,' + encodeURIComponent(customCss)
                 ]
@@ -398,7 +399,6 @@
         }
 
         const previewData = editor.getData();
-        const editorWidth = editor.config.width; // Get actual editor width
 
         // 編輯器內cke_editable，height不可指定，因為需要計算長度彈出警告
         // 預覽視窗內cke_editable，height必須指定，否則無法計算高度分割圖片。
@@ -424,7 +424,7 @@
         const iframe = document.createElement('iframe');
         iframe.style.position = 'absolute';
         iframe.style.left = '-9999px';
-        iframe.style.width = editorWidth + 'px';
+        iframe.style.width = EDITOR_WIDTH + 'px';
         // The height will be determined by the content
         iframe.style.height = '1px'; // Start small, will grow
         iframe.style.border = '0';
@@ -447,9 +447,9 @@
                 // 4. Run html2canvas on the iframe's body.
                 html2canvas(iframe.contentWindow.document.documentElement, {
                     useCORS: true,
-                    width: editorWidth,
+                    width: EDITOR_WIDTH,
                     height: contentHeight,
-                    windowWidth: editorWidth,
+                    windowWidth: EDITOR_WIDTH,
                     windowHeight: contentHeight,
                     scale: window.devicePixelRatio
                 })
